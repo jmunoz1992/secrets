@@ -1,7 +1,7 @@
 {
-  "name": "boilermaker",
+  "name": "secrets",
   "version": "1.0.0",
-  "description": "Some boilerplate code to get you started - get shakin'!",
+  "description": "Because the best way to keep secrets is to post them to a web app",
   "engines": {
     "node": ">= 7.0.0"
   },
