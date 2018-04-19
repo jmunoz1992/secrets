@@ -19,18 +19,22 @@ const seedUsers = [
 
 const seedSecrets = [
   {
+    id: 1,
     message: 'I love the admin of this web site.',
     userId: 1,
     isPublic: true
   }, {
+    id: 2,
     message: 'Once I shoplifted from Macys.',
     userId: 1,
     isPublic: false
   }, {
+    id: 3,
     message: 'I took the ACT for my sister. I got a terrible score.',
     userId: 2,
     isPublic: true
   }, {
+    id: 4,
     message: 'I kissed a girl.',
     userId: 2,
     isPublic: false
