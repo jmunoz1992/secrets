@@ -1,12 +1,11 @@
-/* global describe beforeEach it */
-
 const { expect } = require('chai');
-const db = require('../index');
+const db = require('../db/index');
 const Secret = db.model('secret');
 const User = db.model('user');
 const { seedSecrets, seedUsers } = require('./test-seeds');
-console.log('seedSecrets, seedUsers: ', seedSecrets, seedUsers);
 const assert = require('assert');
+const app = require('../index');
+const request = require('supertest');
 
 describe('Secret model', () => {
   before(async () => {
@@ -17,43 +16,18 @@ describe('Secret model', () => {
     assert(secrets.length === 4, 'Secret.bulkCreate failed');
   });
 
-  describe('properties', () => {
-    beforeEach('create new message', );
-    it('should include secret message', () => {
+  describe('GET /api/secrets', () => {
+    it('should grab all the secrets', () => {
+      return request(app)
+        .get('/api/secrets')
+        .expect(200)
+        .then(res => {
+          expect(res.body).to.be.an('array');
+          expect(res.body.length).to.equal(seedSecrets.length);
+          expect(res.body[0].message).to.equal(seedSecrets[0].message);
+        });
 
     });
   });
-
-  it('should be true', () => {
-    expect(true).to.equal(true);
-  });
-
-  // beforeEach(() => {
-  //   return Passage.create({
-  //     title: 'Hello World',
-  //     content: 'Hello yee world of mine!'
-  //   })
-  //   .then(passage => {
-  //     hello = passage;
-  //   })
-  //   .catch(err => {
-  //     console.log(err.message);
-  //   });
-  // });
-
-  // describe('Model assignments', () => {
-  //   it('Defaults to not public', () => {
-  //     expect(hello.isPublic).to.be.equal(false);
-  //   });
-  // });
-
-
-  // describe('Methods', () => {
-
-  //   it('Preview returns a slice the length you provide it', () => {
-  //     expect(hello.preview(3).length).to.be.equal(3);
-  //     expect(hello.preview(3)).to.be.equal('Hel');
-  //   });
-  // });//end instance methods
-}); // end describe('Passage model')
+});
 

@@ -31,7 +31,7 @@ const seedSecrets = [
     userId: 2,
     isPublic: true
   }, {
-    message: 'I kissed a girl and I liked it.',
+    message: 'I kissed a girl.',
     userId: 2,
     isPublic: false
   }
