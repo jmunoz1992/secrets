@@ -7,4 +7,10 @@ router.get('/', (req, res, next) => {
   .catch(next);
 });
 
+router.post('/', (req, res, next) => {
+  Secret.create(req.body)
+    .then(newSecret => res.status(201).json(newSecret))
+    .catch(next);
+});
+
 module.exports = router;

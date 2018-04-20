@@ -29,5 +29,19 @@ describe('Secret model', () => {
 
     });
   });
+
+  describe('POST /api/secrets', () => {
+    it('should add a new secret', () => {
+      return request(app)
+        .post('/api/secrets')
+        .send({ message: 'a brand new secret', isPublic: true, userId: 1 })
+        .expect(201)
+        .then(res => {
+          expect(res.body.message).to.be.equal('a brand new secret');
+          expect(res.body.isPublic).to.be.equal(true);
+          expect(res.body.userId).to.be.equal(1);
+        });
+    });
+  });
 });
 
