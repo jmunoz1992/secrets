@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import SecretsForm from './SecretsForm';
 
 export const Secrets = (props) => {
   const { secrets } = props;
@@ -8,7 +9,7 @@ export const Secrets = (props) => {
     <div>
       <h1>Most Recent Secrets</h1>
       <ul>
-        { secrets && secrets.map(secret => {
+        { secrets.map(secret => {
           return (
             <li key={`secret-${secret.id}`}>
               {secret.message}
@@ -16,13 +17,14 @@ export const Secrets = (props) => {
           );
         })}
       </ul>
+      <SecretsForm />
     </div>
   );
 };
 
 const mapState = (state) => {
   return {
-    secrets: state.secrets.secrets,
+    secrets: state.secrets,
     user: state.user
   };
 };

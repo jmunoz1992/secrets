@@ -6,4 +6,5 @@
 export {default as Navbar} from './navbar';
 export {default as UserHome} from './user-home';
 export {default as Secrets} from './Secrets';
+export {default as SecretsForm} from './SecretsForm';
 export {Login, Signup} from './auth-form';

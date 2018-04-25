@@ -1,16 +1,13 @@
 const seedUsers = [
   {
-    id: 1,
     email: 'user1@email.com',
     password: '123',
     isAdmin: false
   }, {
-    id: 2,
     email: 'user2@email.com',
     password: '123',
     isAdmin: false
   }, {
-    id: 3,
     email: 'admin@email.com',
     password: '321321',
     isAdmin: true
@@ -31,7 +28,7 @@ const seedSecrets = [
     userId: 2,
     isPublic: true
   }, {
-    message: 'I kissed a girl.',
+    message: 'I don\'t trust anyone like I trust my dog.',
     userId: 2,
     isPublic: false
   }
