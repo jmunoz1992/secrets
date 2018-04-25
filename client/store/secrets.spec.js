@@ -1,7 +1,10 @@
 import reducer, {
   gotSecrets,
   GOT_SECRETS,
-  fetchSecrets
+  fetchSecrets,
+  GOT_ONE_SECRET,
+  gotOneSecret,
+  createSecret
 } from './secrets';
 
 import { expect } from 'chai';
@@ -14,19 +17,24 @@ const middlewares = [thunkMiddleware];
 const mockStore = configureMockStore(middlewares);
 
 describe('Passages store', () => {
-  const initialState = {
-    secrets: [],
-    currentSecretId: -1
-  };
+  const initialState = [];
 
   describe('action creators', () => {
-    describe('gotPassages', () => {
+    describe('gotSecrets', () => {
       it('should return an action with the correct type', () => {
         const action = gotSecrets([{ message: 'I am a secret!', isPublic: false }]);
         expect(action.type).to.equal(GOT_SECRETS);
         expect(action.secrets).to.deep.equal([
           { message: 'I am a secret!', isPublic: false }
         ]);
+      });
+    });
+
+    describe('gotOneSecret', () => {
+      it('should return an action with the correct type', () => {
+        const action = gotOneSecret({ message: 'I am one secret!', isPublic: false });
+        expect(action.type).to.equal(GOT_ONE_SECRET);
+        expect(action.secret).to.deep.equal({ message: 'I am one secret!', isPublic: false });
       });
     });
   });
@@ -56,6 +64,19 @@ describe('Passages store', () => {
           });
       });
     });
+
+    describe('createSecret', () => {
+      it('dispatches the GOT_ONE_SECRET action', () => {
+        const fakeSecret = { message: 'A super secret', isPublic: true };
+        mockAxios.onPost('/api/secrets', fakeSecret).replyOnce(201, fakeSecret);
+        return store.dispatch(createSecret(fakeSecret))
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions[0].type).to.be.equal(GOT_ONE_SECRET);
+            expect(actions[0].secret).to.deep.equal(fakeSecret);
+          });
+      });
+    });
   });
 
   describe('reducer', () => {
@@ -70,10 +91,22 @@ describe('Passages store', () => {
           secrets: fakeSecrets
         };
         const newState = reducer(initialState, action);
-        expect(newState).to.deep.equal({
-          secrets: fakeSecrets,
-          currentSecretId: -1
-        });
+        expect(newState).to.deep.equal([...fakeSecrets]);
+      });
+    });
+
+    describe('GOT_ONE_SECRET action', () => {
+      it('should add a secret to the list of secrets', () => {
+        const state = [
+          { message: 'a secret', isPublic: false },
+          { message: '2nd secret', isPublic: true }
+        ];
+        const action = {
+          type: GOT_ONE_SECRET,
+          secret: { message: 'I am a fake secret', isPublic: false }
+        };
+        const newState = reducer(state, action);
+        expect(newState).to.deep.equal([...state, action.secret]);
       });
     });
   });
