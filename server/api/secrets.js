@@ -13,4 +13,12 @@ router.post('/', (req, res, next) => {
     .catch(next);
 });
 
+// Can only update isPublic
+router.put('/:id', (req, res, next) => {
+  Secret.findById(req.params.id)
+    .then(secret => secret.update(req.body))
+    .then(secret => res.status(202).json(secret))
+    .catch(next);
+});
+
 module.exports = router;

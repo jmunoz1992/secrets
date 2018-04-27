@@ -8,7 +8,7 @@ const app = require('../index');
 const request = require('supertest');
 
 describe('Secret model', () => {
-  before(async () => {
+  beforeEach(async () => {
     await db.sync({ force: true });
     const users = await User.bulkCreate(seedUsers);
     const secrets = await Secret.bulkCreate(seedSecrets);
@@ -40,6 +40,18 @@ describe('Secret model', () => {
           expect(res.body.message).to.be.equal('a brand new secret');
           expect(res.body.isPublic).to.be.equal(true);
           expect(res.body.userId).to.be.equal(1);
+        });
+    });
+  });
+
+  describe('PUT /api/secrets/:id', () => {
+    it('should update a secret', () => {
+      return request(app)
+        .put('/api/secrets/1')
+        .send({ isPublic: false })
+        .expect(202)
+        .then(res => {
+          expect(res.body.isPublic).to.be.equal(false);
         });
     });
   });
