@@ -1,10 +1,13 @@
 import reducer, {
-  gotSecrets,
   GOT_SECRETS,
-  fetchSecrets,
   GOT_ONE_SECRET,
+  GOT_UPDATED_SECRET,
+  gotSecrets,
+  fetchSecrets,
+  createSecret,
+  updateSecret,
   gotOneSecret,
-  createSecret
+  gotUpdatedSecret,
 } from './secrets';
 
 import { expect } from 'chai';
@@ -35,6 +38,14 @@ describe('Passages store', () => {
         const action = gotOneSecret({ message: 'I am one secret!', isPublic: false });
         expect(action.type).to.equal(GOT_ONE_SECRET);
         expect(action.secret).to.deep.equal({ message: 'I am one secret!', isPublic: false });
+      });
+    });
+
+    describe('gotUpdatedSecret', () => {
+      it('should return an action with the correct type', () => {
+        const action = gotUpdatedSecret({ id: 1, message: 'I an updated secret!', isPublic: true });
+        expect(action.type).to.equal(GOT_UPDATED_SECRET);
+        expect(action.secret).to.deep.equal({ id: 1, message: 'I an updated secret!', isPublic: true });
       });
     });
   });
@@ -77,14 +88,27 @@ describe('Passages store', () => {
           });
       });
     });
+
+    describe('updateSecret', () => {
+      it('dispatches the GOT_UPDATED_SECRET action', () => {
+        const fakeSecret = { id: 1, message: 'A super updated secret', isPublic: true };
+        mockAxios.onPut(`/api/secrets/${fakeSecret.id}`, fakeSecret).replyOnce(202, fakeSecret);
+        return store.dispatch(updateSecret(fakeSecret))
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions[0].type).to.be.equal(GOT_UPDATED_SECRET);
+            expect(actions[0].secret).to.deep.equal(fakeSecret);
+          });
+      });
+    });
   });
 
   describe('reducer', () => {
     describe('GOT_SECRETS action', () => {
       it('should replace initial state with new secrets', () => {
         const fakeSecrets = [
-          { message: 'a secret', isPublic: false },
-          { msesage: '2nd secret', isPublic: true }
+          { id: 1, message: 'a secret', isPublic: false },
+          { id: 2, msesage: '2nd secret', isPublic: true }
         ];
         const action = {
           type: GOT_SECRETS,
@@ -98,15 +122,33 @@ describe('Passages store', () => {
     describe('GOT_ONE_SECRET action', () => {
       it('should add a secret to the list of secrets', () => {
         const state = [
-          { message: 'a secret', isPublic: false },
-          { message: '2nd secret', isPublic: true }
+          { id: 1, message: 'a secret', isPublic: false },
+          { id: 2, message: '2nd secret', isPublic: true }
         ];
         const action = {
           type: GOT_ONE_SECRET,
-          secret: { message: 'I am a fake secret', isPublic: false }
+          secret: { id: 3, message: 'I am a fake secret', isPublic: false }
         };
         const newState = reducer(state, action);
         expect(newState).to.deep.equal([...state, action.secret]);
+      });
+    });
+
+    describe('GOT_UPDATED_SECRET action', () => {
+      it('should add a secret to the list of secrets', () => {
+        const state = [
+          { id: 1, message: 'a secret', isPublic: false },
+          { id: 2, message: '2nd secret', isPublic: true }
+        ];
+        const action = {
+          type: GOT_UPDATED_SECRET,
+          secret: { id: 1, message: 'I am an updated secret', isPublic: true }
+        };
+        const newState = reducer(state, action);
+        expect(newState).to.deep.equal([
+          { id: 1, message: 'I am an updated secret', isPublic: true },
+          { id: 2, message: '2nd secret', isPublic: true }
+        ]);
       });
     });
   });

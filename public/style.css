@@ -19,3 +19,73 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+/* 
+  CheckBoxSlider 
+  CSS from https://www.w3schools.com/howto/howto_css_switch.asp
+*/
+
+.cbs_switch {
+  -webkit-transform: translateY(4px);
+  -ms-transform: translateY(4px);
+  transform: translateY(4px);
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 17px;
+  margin: 0 6px;
+}
+
+/* Hide default HTML checkbox */
+.cbs_switch input {display:none;}
+
+/* 
+  The slider 
+*/
+
+.cbs_slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.cbs_slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .cbs_slider {
+  background-color: #2196F3;
+}
+
+input:focus + .cbs_slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .cbs_slider:before {
+  -webkit-transform: translateX(12px);
+  -ms-transform: translateX(12px);
+  transform: translateX(12px);
+}
+
+/* Rounded sliders */
+.cbs_slider.cbs_round {
+  border-radius: 17px;
+}
+
+.cbs_slider.cbs_round:before {
+  border-radius: 50%;
+}

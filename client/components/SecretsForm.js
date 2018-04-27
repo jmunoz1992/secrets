@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSecret } from '../store';
+import CheckBoxSlider from './CheckBoxSlider';
 
 export class SecretsForm extends Component
 {
@@ -8,41 +9,47 @@ export class SecretsForm extends Component
     super();
     this.state = {
       newSecret: '',
-      isPrivate: true
+      isPublic: false
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
     const newState = {};
-    if (event.target.name === 'isPrivate') {
-      newState.isPrivate = event.target.checked;
+    if (event.target.name === 'isPublic') {
+      newState.isPublic = event.target.checked;
     } else {
       newState[event.target.name] = event.target.value;
     }
     this.setState(newState);
   }
 
-  // handleSubmit(event) {
-  //   alert('A new secret was submitted: ' + this.state.newSecret);
-  //   event.preventDefault();
-  // }
+  resetState() {
+    this.setState({
+      newSecret: '',
+      isPublic: false
+    });
+  }
 
   render() {
-    const { newSecret, isPrivate } = this.state;
+    const { newSecret, isPublic } = this.state;
     const { handleSubmit } = this.props;
 
     return (
-      <form onSubmit={event => {handleSubmit(event);}}>
+      <form onSubmit={event => {handleSubmit(event); this.resetState();}}>
         <label>What's your secret?</label>
-        <textarea value={newSecret} onChange={this.handleChange} name="newSecret" />
-        <br />
-        <input
-          type="checkbox"
+        <textarea
+          value={newSecret}
           onChange={this.handleChange}
-          checked={isPrivate}
-          name="isPrivate"
-        /> keep private<br />
+          name="newSecret"
+        />
+        <br />
+        <CheckBoxSlider
+          onChange={this.handleChange}
+          checked={isPublic}
+          name="isPublic"
+          label="public?"
+        />
         <button type="submit">Save</button>
       </form>
     );
@@ -52,11 +59,10 @@ export class SecretsForm extends Component
 const mapDispatch = (dispatch) => {
   return {
     handleSubmit(event) {
-      console.log('event.target: ', event.target);
       event.preventDefault();
       const newSecret = {
         message: event.target.newSecret.value,
-        isPublic: !event.target.isPrivate.checked
+        isPublic: event.target.isPublic.checked
       };
       dispatch(createSecret(newSecret));
     }
