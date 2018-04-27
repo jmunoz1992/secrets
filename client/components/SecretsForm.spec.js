@@ -16,7 +16,6 @@ describe('<Secrets />', () => {
 
   it('should render some elements', () => {
     expect(secretsForm.find('textarea').length).to.equal(1);
-    expect(secretsForm.find('input').length).to.equal(1);
     expect(secretsForm.find('button').length).to.equal(1);
   });
 });

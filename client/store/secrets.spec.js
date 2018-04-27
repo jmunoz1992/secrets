@@ -107,8 +107,8 @@ describe('Passages store', () => {
     describe('GOT_SECRETS action', () => {
       it('should replace initial state with new secrets', () => {
         const fakeSecrets = [
-          { message: 'a secret', isPublic: false },
-          { msesage: '2nd secret', isPublic: true }
+          { id: 1, message: 'a secret', isPublic: false },
+          { id: 2, msesage: '2nd secret', isPublic: true }
         ];
         const action = {
           type: GOT_SECRETS,
@@ -122,12 +122,12 @@ describe('Passages store', () => {
     describe('GOT_ONE_SECRET action', () => {
       it('should add a secret to the list of secrets', () => {
         const state = [
-          { message: 'a secret', isPublic: false },
-          { message: '2nd secret', isPublic: true }
+          { id: 1, message: 'a secret', isPublic: false },
+          { id: 2, message: '2nd secret', isPublic: true }
         ];
         const action = {
           type: GOT_ONE_SECRET,
-          secret: { message: 'I am a fake secret', isPublic: false }
+          secret: { id: 3, message: 'I am a fake secret', isPublic: false }
         };
         const newState = reducer(state, action);
         expect(newState).to.deep.equal([...state, action.secret]);
