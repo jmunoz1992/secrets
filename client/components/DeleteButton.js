@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DeleteButton = ({onClick}) => {
+export const DeleteButton = ({onClick}) => {
   return (
     <span className="db_button" onClick={onClick}>
       <i className="fas fa-times-circle" />
