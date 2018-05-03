@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import SecretsForm from './SecretsForm';
 import CheckBoxSlider from './CheckBoxSlider';
 import DeleteButton from './DeleteButton';
-import { updateSecret } from '../store';
+import { updateSecret, destroySecret } from '../store';
 
 export const Secrets = (props) => {
-  const { secrets, handleChange } = props;
+  const { secrets, handleChange, handleDelete } = props;
 
   return (
     <div>
@@ -22,7 +22,9 @@ export const Secrets = (props) => {
                 checked={secret.isPublic}
                 name={secret.id}
               />
-              <DeleteButton />
+              <DeleteButton
+                onClick={() => {handleDelete(secret.id);}}
+              />
             </li>
           );
         })}
@@ -41,12 +43,14 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     handleChange(event) {
-      console.log('event: ', event);
       const updatedSecret = {
         id: +event.target.name,
         isPublic: event.target.checked
       };
       dispatch(updateSecret(updatedSecret));
+    },
+    handleDelete(id) {
+      dispatch(destroySecret(id));
     }
   };
 };

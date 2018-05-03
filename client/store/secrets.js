@@ -69,7 +69,7 @@ export const updateSecret = secret =>
 
 export const destroySecret = secretId =>
   dispatch =>
-    axios.put(`/api/secrets/${secretId}`)
+    axios.delete(`/api/secrets/${secretId}`)
       .then(() => {
         dispatch(removeSecret(secretId));
       })

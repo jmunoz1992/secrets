@@ -115,7 +115,7 @@ describe('Passages store', () => {
 
     describe('destroySecret', () => {
       it('dispatches the REMOVE_SECRET action', () => {
-        mockAxios.onPut(`/api/secrets/1`).replyOnce(204);
+        mockAxios.onDelete(`/api/secrets/1`).replyOnce(204);
         return store.dispatch(destroySecret(1))
           .then(() => {
             const actions = store.getActions();
