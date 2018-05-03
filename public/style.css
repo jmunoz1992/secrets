@@ -89,3 +89,9 @@ input:checked + .cbs_slider:before {
 .cbs_slider.cbs_round:before {
   border-radius: 50%;
 }
+
+/* Delete Button */
+.db_button {
+  color: red;
+  font-size: 14px;
+}

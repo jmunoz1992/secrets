@@ -2,12 +2,15 @@ import reducer, {
   GOT_SECRETS,
   GOT_ONE_SECRET,
   GOT_UPDATED_SECRET,
+  REMOVE_SECRET,
   gotSecrets,
   fetchSecrets,
   createSecret,
   updateSecret,
   gotOneSecret,
   gotUpdatedSecret,
+  removeSecret,
+  destroySecret,
 } from './secrets';
 
 import { expect } from 'chai';
@@ -46,6 +49,14 @@ describe('Passages store', () => {
         const action = gotUpdatedSecret({ id: 1, message: 'I an updated secret!', isPublic: true });
         expect(action.type).to.equal(GOT_UPDATED_SECRET);
         expect(action.secret).to.deep.equal({ id: 1, message: 'I an updated secret!', isPublic: true });
+      });
+    });
+
+    describe('removeSecret', () => {
+      it('should return an action with the correct type', () => {
+        const action = removeSecret(1);
+        expect(action.type).to.equal(REMOVE_SECRET);
+        expect(action.secretId).to.equal(1);
       });
     });
   });
@@ -101,6 +112,18 @@ describe('Passages store', () => {
           });
       });
     });
+
+    describe('destroySecret', () => {
+      it('dispatches the REMOVE_SECRET action', () => {
+        mockAxios.onDelete(`/api/secrets/1`).replyOnce(204);
+        return store.dispatch(destroySecret(1))
+          .then(() => {
+            const actions = store.getActions();
+            expect(actions[0].type).to.be.equal(REMOVE_SECRET);
+            expect(actions[0].secretId).to.equal(1);
+          });
+      });
+    });
   });
 
   describe('reducer', () => {
@@ -134,19 +157,18 @@ describe('Passages store', () => {
       });
     });
 
-    describe('GOT_UPDATED_SECRET action', () => {
-      it('should add a secret to the list of secrets', () => {
+    describe('REMOVE_SECRET action', () => {
+      it('should remove a secret to the list of secrets', () => {
         const state = [
           { id: 1, message: 'a secret', isPublic: false },
           { id: 2, message: '2nd secret', isPublic: true }
         ];
         const action = {
-          type: GOT_UPDATED_SECRET,
-          secret: { id: 1, message: 'I am an updated secret', isPublic: true }
+          type: REMOVE_SECRET,
+          secretId: 1
         };
         const newState = reducer(state, action);
         expect(newState).to.deep.equal([
-          { id: 1, message: 'I am an updated secret', isPublic: true },
           { id: 2, message: '2nd secret', isPublic: true }
         ]);
       });

@@ -55,5 +55,13 @@ describe('Secret model', () => {
         });
     });
   });
+
+  describe('DELETE /api/secrets/:id', () => {
+    it('should delete a secret', () => {
+      return request(app)
+        .delete('/api/secrets/1')
+        .expect(204);
+    });
+  });
 });
 
