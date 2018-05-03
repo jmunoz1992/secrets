@@ -4,6 +4,7 @@ import { sortById } from '../../script/sorting';
 export const GOT_SECRETS = 'GOT_SECRETS';
 export const GOT_ONE_SECRET = 'GOT_ONE_SECRET';
 export const GOT_UPDATED_SECRET = 'GOT_UPDATED_SECRET';
+export const REMOVE_SECRET = 'REMOVE_SECRET';
 
 const initialState = [];
 
@@ -27,6 +28,13 @@ export const gotUpdatedSecret = secret => (
   {
     type: GOT_UPDATED_SECRET,
     secret
+  }
+);
+
+export const removeSecret = id => (
+  {
+    type: REMOVE_SECRET,
+    secretId: id
   }
 );
 
@@ -59,6 +67,14 @@ export const updateSecret = secret =>
       })
       .catch(err => console.error(err.message));
 
+export const destroySecret = secretId =>
+  dispatch =>
+    axios.put(`/api/secrets/${secretId}`)
+      .then(() => {
+        dispatch(removeSecret(secretId));
+      })
+      .catch(err => console.error(err.message));
+
 // Reducer
 
 export default function (state = initialState, action) {
@@ -75,6 +91,11 @@ export default function (state = initialState, action) {
       return [
         ...state.filter(secret => secret.id !== action.secret.id),
         action.secret
+      ].sort(sortById);
+
+    case REMOVE_SECRET:
+      return [
+        ...state.filter(secret => secret.id !== action.secretId)
       ].sort(sortById);
 
     default:
