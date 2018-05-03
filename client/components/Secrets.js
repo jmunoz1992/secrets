@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import SecretsForm from './SecretsForm';
 import CheckBoxSlider from './CheckBoxSlider';
+import DeleteButton from './DeleteButton';
 import { updateSecret } from '../store';
 
 export const Secrets = (props) => {
@@ -21,6 +22,7 @@ export const Secrets = (props) => {
                 checked={secret.isPublic}
                 name={secret.id}
               />
+              <DeleteButton />
             </li>
           );
         })}
