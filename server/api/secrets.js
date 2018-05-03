@@ -21,4 +21,14 @@ router.put('/:id', (req, res, next) => {
     .catch(next);
 });
 
+router.delete('/:id', (req, res, next) => {
+  Secret.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(secret => res.status(204).json(secret))
+    .catch(next);
+});
+
 module.exports = router;
