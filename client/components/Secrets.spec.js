@@ -20,6 +20,6 @@ describe('<Secrets />', () => {
   });
 
   it('should render each secret as a list item', () => {
-    expect(secrets.find('li').length).to.equal(seedSecrets.length);
+    expect(secrets.find('li').length).to.equal(2);
   });
 });

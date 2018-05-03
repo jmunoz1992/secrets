@@ -5,8 +5,14 @@ import CheckBoxSlider from './CheckBoxSlider';
 import DeleteButton from './DeleteButton';
 import { updateSecret, destroySecret } from '../store';
 
+const isMySecret = (userId, secret) => {
+  if (secret.userId === userId) return true;
+  return false;
+};
+
 export const Secrets = (props) => {
-  const { secrets, handleChange, handleDelete } = props;
+  const { user, secrets, handleChange, handleDelete } = props;
+  const userId = user ? user.id : null;
 
   return (
     <div>
@@ -14,19 +20,29 @@ export const Secrets = (props) => {
       <SecretsForm />
       <ul>
         { secrets.map(secret => {
-          return (
-            <li key={`secret-${secret.id}`}>
-              {secret.message}
-              <CheckBoxSlider
-                onChange={handleChange}
-                checked={secret.isPublic}
-                name={secret.id}
-              />
-              <DeleteButton
-                onClick={() => {handleDelete(secret.id);}}
-              />
-            </li>
-          );
+          if (isMySecret(userId, secret)) {
+            return (
+              <li key={`secret-${secret.id}`}>
+                “{secret.message}” - me
+                <CheckBoxSlider
+                  onChange={handleChange}
+                  checked={secret.isPublic}
+                  name={secret.id}
+                />
+                <DeleteButton
+                  onClick={() => {handleDelete(secret.id);}}
+                />
+              </li>
+            );
+          } else if (secret.isPublic) {
+            return (
+              <li key={`secret-${secret.id}`}>
+                “{secret.message}” - anonymous
+              </li>
+            );
+          } else {
+            return null;
+          }
         })}
       </ul>
     </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CheckBoxSlider = ({ label, name, checked, onChange }) => {
+export const CheckBoxSlider = ({ label, name, checked, onChange }) => {
   return (
     <span>
       <label className="cbs_switch">
