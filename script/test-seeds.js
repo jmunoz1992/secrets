@@ -1,16 +1,13 @@
 const seedUsers = [
   {
     email: 'user1@email.com',
-    password: '123',
-    isAdmin: false
+    password: '123'
   }, {
     email: 'user2@email.com',
-    password: '123',
-    isAdmin: false
+    password: '123'
   }, {
     email: 'admin@email.com',
-    password: '321321',
-    isAdmin: true
+    password: '321321'
   }
 ];
 
