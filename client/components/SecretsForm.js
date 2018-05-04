@@ -33,10 +33,11 @@ export class SecretsForm extends Component
 
   render() {
     const { newSecret, isPublic } = this.state;
-    const { handleSubmit } = this.props;
+    const { handleSubmit, user } = this.props;
+    const userId = user ? user.id : null;
 
     return (
-      <form onSubmit={event => {handleSubmit(event); this.resetState();}}>
+      <form onSubmit={event => {handleSubmit(event, userId); this.resetState();}}>
         <label>What's your secret?</label>
         <textarea
           value={newSecret}
@@ -56,17 +57,24 @@ export class SecretsForm extends Component
   }
 }
 
+const mapState = (state) => {
+  return {
+    user: state.user
+  };
+};
+
 const mapDispatch = (dispatch) => {
   return {
-    handleSubmit(event) {
+    handleSubmit(event, userId) {
       event.preventDefault();
       const newSecret = {
         message: event.target.newSecret.value,
-        isPublic: event.target.isPublic.checked
+        isPublic: event.target.isPublic.checked,
+        userId: userId
       };
       dispatch(createSecret(newSecret));
     }
   };
 };
 
-export default connect(null, mapDispatch)(SecretsForm);
+export default connect(mapState, mapDispatch)(SecretsForm);
