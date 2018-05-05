@@ -17,6 +17,7 @@ export const Secrets = (props) => {
   return (
     <div>
       <h1>Most Recent Secrets</h1>
+      <p>solution version</p>
       {userId ? <SecretsForm /> : null}
       <div id="s_container">
         { secrets.map(secret => {
