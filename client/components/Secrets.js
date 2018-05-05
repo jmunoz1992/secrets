@@ -19,33 +19,35 @@ export const Secrets = (props) => {
       <h1>Most Recent Secrets</h1>
       <p>solution version</p>
       {userId ? <SecretsForm /> : null}
-      <ul>
+      <div id="s_container">
         { secrets.map(secret => {
           if (isMySecret(userId, secret)) {
             return (
-              <li key={`secret-${secret.id}`}>
+              <div className="s_message" key={`secret-${secret.id}`}>
                 “{secret.message}” - me
-                <CheckBoxSlider
-                  onChange={handleChange}
-                  checked={secret.isPublic}
-                  name={secret.id}
-                />
-                <DeleteButton
-                  onClick={() => {handleDelete(secret.id);}}
-                />
-              </li>
+                <div className="s_controls">
+                  <CheckBoxSlider
+                    onChange={handleChange}
+                    checked={secret.isPublic}
+                    name={secret.id}
+                  />
+                  <DeleteButton
+                    onClick={() => {handleDelete(secret.id);}}
+                  />
+                </div>
+              </div>
             );
           } else if (secret.isPublic) {
             return (
-              <li key={`secret-${secret.id}`}>
+              <div className="s_message" key={`secret-${secret.id}`}>
                 “{secret.message}” - anonymous
-              </li>
+              </div>
             );
           } else {
             return null;
           }
         })}
-      </ul>
+      </div>
     </div>
   );
 };
