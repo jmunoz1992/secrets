@@ -1,3 +1,7 @@
+* {
+  font-size: 18pt;
+}
+
 body {
   font-family: sans-serif;
 }
@@ -91,7 +95,27 @@ input:checked + .cbs_slider:before {
 }
 
 /* Delete Button */
-.db_button {
+.db_button i {
   color: red;
-  font-size: 14px;
+  font-size: .6rem;
+}
+
+/* Secrets */
+
+.s_message {
+  position: relative;
+  background-color: #fff;
+  padding: 1.3rem 1.5rem 1.6rem;
+  margin: 1rem;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+  line-height: 1.2rem;
+  font-family: 'East Sea Dokdo', cursive;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 64)
+}
+
+.s_controls {
+  position: absolute;
+  bottom: 0.1rem;
+  right: 0.3rem;
 }
