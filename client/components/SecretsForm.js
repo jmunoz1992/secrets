@@ -37,22 +37,25 @@ export class SecretsForm extends Component
     const userId = user ? user.id : null;
 
     return (
-      <form onSubmit={event => {handleSubmit(event, userId); this.resetState();}}>
-        <label>What's your secret?</label>
-        <textarea
-          value={newSecret}
-          onChange={this.handleChange}
-          name="newSecret"
-        />
-        <br />
-        <CheckBoxSlider
-          onChange={this.handleChange}
-          checked={isPublic}
-          name="isPublic"
-          label="public?"
-        />
-        <button type="submit">Save</button>
-      </form>
+      <div id="f_container">
+        <form onSubmit={event => {handleSubmit(event, userId); this.resetState();}}>
+          <label>What's your secret?</label>
+          <textarea
+            value={newSecret}
+            onChange={this.handleChange}
+            name="newSecret"
+            placeholder="INSECURE! This site is NOT secure. Do not post actual secrets. For educational purposes only."
+          />
+          <br />
+          <CheckBoxSlider
+            onChange={this.handleChange}
+            checked={isPublic}
+            name="isPublic"
+            label="public?"
+          />
+          <button type="submit">Save</button>
+        </form>
+      </div>
     );
   }
 }
