@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import SecretsForm from './SecretsForm';
-import CheckBoxSlider from './CheckBoxSlider';
-import DeleteButton from './DeleteButton';
+import Secret from './Secret';
 import { updateSecret, destroySecret } from '../store';
 
 const isMySecret = (userId, secret) => {
@@ -16,32 +15,18 @@ export const Secrets = (props) => {
 
   return (
     <div>
-      <h1>Most Recent Secrets</h1>
-      <p>solution version</p>
       {userId ? <SecretsForm /> : null}
       <div id="s_container">
-        { secrets.map(secret => {
-          if (isMySecret(userId, secret)) {
+        {secrets.map(secret => {
+          if (secret.isPublic || secret.userId === userId) {
             return (
-              <div className="s_message" key={`secret-${secret.id}`}>
-                “{secret.message}” - me
-                <div className="s_controls">
-                  <CheckBoxSlider
-                    onChange={handleChange}
-                    checked={secret.isPublic}
-                    name={secret.id}
-                  />
-                  <DeleteButton
-                    onClick={() => {handleDelete(secret.id);}}
-                  />
-                </div>
-              </div>
-            );
-          } else if (secret.isPublic) {
-            return (
-              <div className="s_message" key={`secret-${secret.id}`}>
-                “{secret.message}” - anonymous
-              </div>
+              <Secret
+                key={secret.id}
+                secret={secret}
+                handleChange={handleChange}
+                handleDelete={handleDelete}
+                userId={userId}
+              />
             );
           } else {
             return null;
