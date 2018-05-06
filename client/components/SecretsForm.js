@@ -44,6 +44,7 @@ export class SecretsForm extends Component
             value={newSecret}
             onChange={this.handleChange}
             name="newSecret"
+            placeholder="INSECURE! This site is NOT secure. Do not post actual secrets. For educational purposes only."
           />
           <br />
           <CheckBoxSlider

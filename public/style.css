@@ -122,7 +122,7 @@ input:checked + .cbs_slider:before {
   position: relative;
   background-color: #fff;
   padding: 1.3rem 1.5rem 1.6rem;
-  margin: 1rem;
+  margin: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-size: 1.5rem;
   line-height: 1.2rem;
@@ -193,6 +193,20 @@ header {
   border-radius: 0.5rem;
 }
 
-#f_container label, #f_container button  {
+#f_container button {
+  float: right;
+  margin-top: 0.2rem;
+}
+
+#f_container label, 
+#f_container button, 
+#f_container span, 
+#f_container textarea   {
   font-size: 0.6rem;
+}
+
+#f_container textarea {
+  margin-top: 0.2rem;
+  width: 100%;
+  min-height: 100px;
 }
