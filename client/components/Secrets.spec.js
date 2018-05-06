@@ -15,10 +15,6 @@ describe('<Secrets />', () => {
     secrets = shallow(<Secrets secrets={seedSecrets} />);
   });
 
-  it('should render as an h1', () => {
-    expect(secrets.find('h1').text()).to.equal('Most Recent Secrets');
-  });
-
   it('should render each secret as a div with class s_message', () => {
     expect(secrets.find('div.s_message').length).to.equal(2);
   });
