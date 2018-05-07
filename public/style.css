@@ -177,9 +177,9 @@ header {
   font-size: 0.5rem;
 }
 
-/* Form */
+/* Form(s) */
 
-#f_container {
+#f_container, #af_container {
   margin-left: auto;
   margin-right: auto;
   padding: 1rem;
@@ -189,8 +189,12 @@ header {
 #f_container > form {
   background-color: navy;
   color: white;
+}
+
+#f_container > form, #af_container > form {
   padding: 1rem;
   border-radius: 0.5rem;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 64);
 }
 
 #f_container button {
@@ -198,15 +202,28 @@ header {
   margin-top: 0.2rem;
 }
 
+#af_container label,
 #f_container label, 
 #f_container button, 
+#af_container button,
 #f_container span, 
 #f_container textarea   {
   font-size: 0.6rem;
+}
+
+#af_container input {
+  width: 100%;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
 }
 
 #f_container textarea {
   margin-top: 0.2rem;
   width: 100%;
   min-height: 100px;
+}
+
+#af_container button {
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.3rem;
 }
