@@ -13,11 +13,17 @@ router.post('/', (req, res, next) => {
     .catch(next);
 });
 
-// Can only update isPublic
 router.put('/:id', (req, res, next) => {
-  Secret.findById(req.params.id)
-    .then(secret => secret.update(req.body))
-    .then(secret => res.status(202).json(secret))
+  Secret.update(
+    req.body,
+    {
+      where: { id: req.params.id },
+      returning: true,
+      plain: true
+    }
+  )
+    .then(result => result[1].dataValues)
+    .then(secret => res.status(200).json(secret))
     .catch(next);
 });
 
@@ -27,7 +33,7 @@ router.delete('/:id', (req, res, next) => {
       id: req.params.id
     }
   })
-    .then(secret => res.status(204).json(secret))
+    .then(() => res.sendStatus(204))
     .catch(next);
 });
 
