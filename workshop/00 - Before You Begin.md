@@ -4,14 +4,14 @@
 
 Make sure to do the following steps before you begin:
 
-* Fork and clone: [https://github.com/mullaney/secrets]
+* Fork and clone: [https://github.com/mullaney/secrets](https://github.com/mullaney/secrets)
 * `npm install`
 * `createdb secrets` & `createdb secrets-test`
 * `npm run seed`
 
 ## Try the application
 
-Now startup the dev server and go to [http://localhost:8080/] to try out the app. Here are some things for you to try: 
+Now startup the dev server and go to [http://localhost:8080/](http://localhost:8080/) to try out the app. Here are some things for you to try: 
 
 * Create an account using the sign up link and try creating a new secret
 * Create another new secret and use the slider to make it public
@@ -32,7 +32,7 @@ Hooray! It's perfect!
 
 If you are still logged in, sign out of the app and then go to the following link:
 
-[http://localhost:8080/api/secrets]
+[http://localhost:8080/api/secrets](http://localhost:8080/api/secrets)
 
 See that? It's not secure. Not only can you see all the secrets, you can see the id numbers of the user who created each secret. It gets worse, you don't even need to know the api route. Just open up the console and look at the redux logger. You can see the secrets there.
 

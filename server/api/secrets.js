@@ -13,7 +13,6 @@ router.post('/', (req, res, next) => {
     .catch(next);
 });
 
-// Can only update isPublic
 router.put('/:id', (req, res, next) => {
   Secret.findById(req.params.id)
     .then(secret => secret.update(req.body))
@@ -22,12 +21,21 @@ router.put('/:id', (req, res, next) => {
 });
 
 router.delete('/:id', (req, res, next) => {
+  const userId = req.user && req.user
+  if (req.user) {
+    const userId = req.user.id;
+  } else {
+    res.status(401).send('Unauthorized');
+    return;
+  }
+
   Secret.destroy({
     where: {
-      id: req.params.id
+      id: req.params.id,
+      userId: userId
     }
   })
-    .then(secret => res.status(204).json(secret))
+    .then(() => res.sendStatus(204))
     .catch(next);
 });
 
