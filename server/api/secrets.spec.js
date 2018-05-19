@@ -49,7 +49,7 @@ describe('Secret model', () => {
       return request(app)
         .put('/api/secrets/1')
         .send({ isPublic: false })
-        .expect(202)
+        .expect(200)
         .then(res => {
           expect(res.body.isPublic).to.be.equal(false);
         });

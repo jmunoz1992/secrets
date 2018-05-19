@@ -40,7 +40,7 @@ describe('<Secrets />', () => {
     expect(secretChildren.at(1).props().secret)
       .to.deep.equal({
         id: 3,
-        message: 'I took the ACT for my sister. I got a terrible score.',
+        message: 'I took the SAT for my sister. I got a terrible score.',
         userId: 2,
         isPublic: true
       });
