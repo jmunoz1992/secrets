@@ -11,6 +11,11 @@ describe('User routes', () => {
     return db.sync({force: true});
   });
 
+  after(() => {
+    return db.close();
+  });
+
+
   describe('/api/users/', () => {
     const codysEmail = 'cody@puppybook.com';
 
