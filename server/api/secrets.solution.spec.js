@@ -13,17 +13,32 @@ const COUNT_USER1_PRIVATE = seedSecrets.filter(secret => secret.isPublic === fal
 describe('Secret model', () => {
   let users = [];
   let secrets = [];
+  let user1PrivateSecret = {};
+  let user2PrivateSecret = {};
+  let authUser = {};
 
   beforeEach(async () => {
     secrets = [];
     await db.sync({ force: true });
     users = await Promise.all(seedUsers.map(user => User.create(user)));
-    for (let i = 0; i < seedSecrets.length; i++) {
-      const sec = await Secret.create(seedSecrets[i]);
-      secrets.push(sec);
-    }
+    secrets = await Promise.all(seedSecrets.map(secret => Secret.create(secret)));
     assert(users.length === 3, 'User.create failed');
     assert(secrets.length === 4, 'Secret.create failed');
+
+    const dbUsers = users.filter(user => user.id === 1);
+    authUser = {
+      id: dbUsers[0].dataValues.id,
+      email: dbUsers[0].dataValues.email,
+      password: 'a123'
+    };
+
+    user1PrivateSecret = secrets.filter(secret => (
+      secret.userId === 1 && secret.isPublic === false
+    ))[0].dataValues;
+
+    user2PrivateSecret = secrets.filter(secret => (
+      secret.userId === 2 && secret.isPublic === false
+    ))[0].dataValues;
   });
 
   describe('guests', () => { // users that are not logged in
@@ -51,7 +66,7 @@ describe('Secret model', () => {
     describe('PUT /api/secrets/:id', () => {
       it('should return a 401 unauthorized error', () => {
         return request(app)
-          .put('/api/secrets/1')
+          .put(`/api/secrets/${user1PrivateSecret.id}`)
           .send({ isPublic: false })
           .expect(401);
       });
@@ -60,7 +75,7 @@ describe('Secret model', () => {
     describe('DELETE /api/secrets', () => {
       it('should return a 401 unauthorized error', () => {
         return request(app)
-          .delete('/api/secrets/1')
+          .delete(`/api/secrets/${user1PrivateSecret.id}`)
           .expect(401);
       });
     });
@@ -70,11 +85,6 @@ describe('Secret model', () => {
     const authenticatedUser = request.agent(app);
 
     beforeEach((done) => {
-      const dbUsers = users.filter(user => user.id === 1);
-      const authUser = {
-        email: dbUsers[0].dataValues.email,
-        password: 'a123'
-      };
       authenticatedUser
         .post('/auth/login')
         .send(authUser)
@@ -115,7 +125,7 @@ describe('Secret model', () => {
       describe('PUT /api/secrets/:id', () => {
         it('should return a 401 unauthorized error', () => {
           return authenticatedUser
-            .put('/api/secrets/3')
+            .put(`/api/secrets/${user2PrivateSecret.id}`)
             .send({ isPublic: false })
             .expect(401);
         });
@@ -124,7 +134,7 @@ describe('Secret model', () => {
       describe('DELETE /api/secrets', () => {
         it('should return a 401 unauthorized error', () => {
           return authenticatedUser
-            .delete('/api/secrets/3')
+            .delete(`/api/secrets/${user2PrivateSecret.id}`)
             .expect(401);
         });
       });
@@ -134,21 +144,22 @@ describe('Secret model', () => {
       describe('PUT /api/secrets/:id', () => {
         it('should update a secret', () => {
           return authenticatedUser
-            .put('/api/secrets/1')
+            .put(`/api/secrets/${user1PrivateSecret.id}`)
             .send({ isPublic: false })
             .expect(200)
             .then(res => {
               expect(res.body.isPublic).to.be.equal(false);
             });
         });
+
         it('should only update whether the secret isPublic', () => {
           return authenticatedUser
-            .put('/api/secrets/1')
+            .put(`/api/secrets/${user1PrivateSecret.id}`)
             .send({ message: '99' })
             .expect(200)
             .then(res => {
               expect(res.body.message).to.be.equal(
-                'I love the admin of this web site.'
+                user1PrivateSecret.message
               );
             });
         });
@@ -157,7 +168,7 @@ describe('Secret model', () => {
       describe('DELETE /api/secrets', () => {
         it('should delete a secret', () => {
           return authenticatedUser
-            .delete('/api/secrets/1')
+            .delete(`/api/secrets/${user1PrivateSecret.id}`)
             .expect(204);
         });
       });
