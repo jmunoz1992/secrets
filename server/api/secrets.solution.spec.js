@@ -7,23 +7,32 @@ const assert = require('assert');
 const app = require('../index');
 const request = require('supertest');
 
-const COUNT_PUBLIC_SECRETS = seedSecrets.filter(secret => secret.isPublic).length;
+const COUNT_PUBLIC = seedSecrets.filter(secret => secret.isPublic).length;
 const COUNT_USER1_PRIVATE = seedSecrets.filter(secret => secret.isPublic === false && secret.userId === 1).length;
 
 describe('Secret model', () => {
-  let users = [];
-  let secrets = [];
   let user1PrivateSecret = {};
   let user2PrivateSecret = {};
   let authUser = {};
 
   beforeEach(async () => {
-    secrets = [];
+
+    /*
+      SEED Test Database
+    */
+
     await db.sync({ force: true });
-    users = await Promise.all(seedUsers.map(user => User.create(user)));
-    secrets = await Promise.all(seedSecrets.map(secret => Secret.create(secret)));
+    const users = await Promise.all(seedUsers.map(user => User.create(user)));
+    const secrets = await Promise.all(seedSecrets.map(secret => Secret.create(secret)));
     assert(users.length === 3, 'User.create failed');
     assert(secrets.length === 4, 'Secret.create failed');
+
+    /*
+      Grab proper user and secret info for tests
+
+      Since the users and secrets are created using Promise.all above,
+      there is no guarantee which seeds will get what id.
+    */
 
     const dbUsers = users.filter(user => user.id === 1);
     authUser = {
@@ -41,7 +50,11 @@ describe('Secret model', () => {
     ))[0].dataValues;
   });
 
-  describe('guests', () => { // users that are not logged in
+  /*
+    Testing behavior for guest users
+  */
+
+  describe('guests', () => {
     describe('GET /api/secrets', () => {
       it('should return only the secrets which are public', () => {
         return request(app)
@@ -49,7 +62,16 @@ describe('Secret model', () => {
           .expect(200)
           .then(res => {
             expect(res.body).to.be.an('array');
-            expect(res.body.length).to.be.equal(COUNT_PUBLIC_SECRETS);
+            expect(res.body.length).to.be.equal(COUNT_PUBLIC);
+          });
+      });
+
+      it('should not return the userId or any data besides the message', () => {
+        return request(app)
+          .get('/api/secrets')
+          .expect(200)
+          .then(res => {
+            expect(res.body[0].userId).to.be.equal(null);
           });
       });
     });
@@ -81,6 +103,10 @@ describe('Secret model', () => {
     });
   });
 
+  /*
+    Testing behavior for an authenticated user
+  */
+
   describe('with authenticated user', () => {
     const authenticatedUser = request.agent(app);
 
@@ -102,7 +128,7 @@ describe('Secret model', () => {
           .expect(200)
           .then(res => {
             expect(res.body).to.be.an('array');
-            expect(res.body.length).to.be.equal(COUNT_PUBLIC_SECRETS + COUNT_USER1_PRIVATE);
+            expect(res.body.length).to.be.equal(COUNT_PUBLIC + COUNT_USER1_PRIVATE);
           });
       });
     });
@@ -121,24 +147,9 @@ describe('Secret model', () => {
       });
     });
 
-    describe('when user does NOT own secret', () => {
-      describe('PUT /api/secrets/:id', () => {
-        it('should return a 401 unauthorized error', () => {
-          return authenticatedUser
-            .put(`/api/secrets/${user2PrivateSecret.id}`)
-            .send({ isPublic: false })
-            .expect(401);
-        });
-      });
-
-      describe('DELETE /api/secrets', () => {
-        it('should return a 401 unauthorized error', () => {
-          return authenticatedUser
-            .delete(`/api/secrets/${user2PrivateSecret.id}`)
-            .expect(401);
-        });
-      });
-    });
+    /*
+      Edit/Delete a secret the user owns
+    */
 
     describe('when user owns secret', () => {
       describe('PUT /api/secrets/:id', () => {
@@ -170,6 +181,29 @@ describe('Secret model', () => {
           return authenticatedUser
             .delete(`/api/secrets/${user1PrivateSecret.id}`)
             .expect(204);
+        });
+      });
+    });
+
+    /*
+      Edit/Delete a secret the user DOES NOT own
+    */
+
+    describe('when user does NOT own secret', () => {
+      describe('PUT /api/secrets/:id', () => {
+        it('should return a 401 unauthorized error', () => {
+          return authenticatedUser
+            .put(`/api/secrets/${user2PrivateSecret.id}`)
+            .send({ isPublic: false })
+            .expect(401);
+        });
+      });
+
+      describe('DELETE /api/secrets', () => {
+        it('should return a 401 unauthorized error', () => {
+          return authenticatedUser
+            .delete(`/api/secrets/${user2PrivateSecret.id}`)
+            .expect(401);
         });
       });
     });

@@ -28,6 +28,11 @@ router.get('/', (req, res, next) => {
     secrets = secrets.filter(secret => {
       return secret.isPublic || secret.userId === userId;
     });
+    secrets = secrets.map(secret => ({
+      id: secret.id,
+      message: secret.message,
+      userId: secret.userId === userId ? userId : null
+    }));
     res.json(secrets);
   })
   .catch(next);
@@ -52,7 +57,7 @@ router.put('/:id', isLoggedIn, belongsTo, (req, res, next) => {
     }
   )
     .then(result => result[1].dataValues)
-    .then(secret => res.status(200).json(secret))
+    .then(updatedSecret => res.status(200).json(updatedSecret))
     .catch(next);
 });
 
