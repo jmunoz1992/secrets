@@ -11,11 +11,6 @@ describe('User routes', () => {
     return db.sync({force: true});
   });
 
-  after(() => {
-    return db.close();
-  });
-
-
   describe('/api/users/', () => {
     const codysEmail = 'cody@puppybook.com';
 
@@ -23,10 +18,6 @@ describe('User routes', () => {
       return User.create({
         email: codysEmail
       });
-    });
-
-    after(() => {
-      return db.close();
     });
 
     it('GET /api/users', () => {
