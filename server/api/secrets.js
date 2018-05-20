@@ -31,7 +31,8 @@ router.get('/', (req, res, next) => {
     secrets = secrets.map(secret => ({
       id: secret.id,
       message: secret.message,
-      userId: secret.userId === userId ? userId : null
+      userId: secret.userId === userId ? userId : null,
+      isPublic: secret.isPublic
     }));
     res.json(secrets);
   })
