@@ -11,18 +11,21 @@ Make sure to do the following steps before you begin:
 
 ## Try the application
 
-Now startup the dev server and go to [http://localhost:8080/](http://localhost:8080/) to try out the app. Here are some things for you to try: 
+Now startup the dev server using `npm run start-dev` and go to [http://localhost:8080/](http://localhost:8080/) to try out the app. Here are some things for you to try: 
 
-* Create an account using the sign up link and try creating a new secret
-* Create another new secret and use the slider to make it public
+* Create an account using the sign up link
+* Creating a new secret
+* Create 2nd new secret and use the slider to make it public
 * Create a third secret and then delete it
 * Log out
 
-After you log out, can you still see the public secret you made? Can you see the private one? Are you able to change the privacy status of any secrets? Can you delete any of the secrets?
+After you log out, can you still see the public secret you made? Can you see the private ones? Are you able to change the privacy status of any secrets? Can you delete any of the secrets? As an unathenticated user, you should:
 
-* Now make another new user and log in
+* Only see public secrets
+* See the author of all secrets as 'anonymous'
+* Not see any buttons which allow you to change or delete the secrets
 
-Can you see the private secret of the first user? Can you update or delete them?
+Now make another new user and log in. You can just Can you see the private secret of the first user? Can you update or delete them?
 
 It would appear that the application is secure. Users cannot see each other's private secrets. They can't change or delete secrets except their own. And they can't see anything that identifies the user that published a public secret.
 
