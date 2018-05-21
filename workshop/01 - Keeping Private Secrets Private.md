@@ -48,7 +48,7 @@ Now let's write our first test. Find the first it block in the file:
 ```javascript
 it('should return only the secrets which are public'); 
 ```
-* Add an arrow function as the second argument for the 'it' method
+* Add an arrow function as the second argument for the `it` method
 * Use the request object to get `/api/secrets`
 * Expect that the api responds with a 200 status
 * Then take the `res`ponse and check the body to make sure it's an array
@@ -142,5 +142,39 @@ router.get('/', (req, res, next) => {
 });
 ```
 Note that if you need to make sure req.user exists before checking for req.user.id or you may get an error when there isn't a user. Now our filter will include all public secrets and all secrets owned by the current user.
+
+Lastly, we want to make one more change. We want to hide the actual userIds in the secret data from the API. We could just prevent that info from being sent altogether, but we do need the userId when it matches the current user. So we have one more test to fill in. Look for the it block like this:
+
+```javascript
+it('should not return the userId or any data besides the message');
+```
+Since this user is within the 'guest' describe , we want to use the basic request(app) to run this test. Add an arrow function to this `it` method and then:
+* Use the request(app) method to get `/api/secrets`
+* Once again expect 200 as the response status
+* Then take the result and verify that the userId of the first secret returned is `null`.
+
+Why not just roll this test into the other test just before it? You could, but this is testing for different behavior than the one above. My general rule is if it's testing different behavior, it should be separated into a different it statement.
+
+Now that we have our newly failing test. Let's fix the code to make this work. One way we can do it, is to take the secrets array and map it to another array that alters the userId if it doesn't match the current user.
+
+```javascript
+router.get('/', (req, res, next) => {
+  const userId = req.user && req.user.id ? req.user.id : null;
+  Secret.findAll()
+  .then(secrets => {
+    secrets = secrets.filter(secret => {
+      return secret.isPublic || secret.userId === userId;
+    });
+    secrets = secrets.map(secret => ({
+      id: secret.id,
+      message: secret.message,
+      userId: secret.userId === userId ? userId : null,
+      isPublic: secret.isPublic
+    }));
+    res.json(secrets);
+  })
+  .catch(next);
+});
+```
 
 Check the tests, is everything passing again? If so, let's move on to the POST route.

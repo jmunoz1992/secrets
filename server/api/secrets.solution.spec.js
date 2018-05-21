@@ -62,7 +62,8 @@ describe('Secret model', () => {
           .expect(200)
           .then(res => {
             expect(res.body).to.be.an('array');
-            expect(res.body.length).to.be.equal(COUNT_PUBLIC);
+            expect(res.body.length).to.equal(COUNT_PUBLIC);
+            expect(res.body[0].isPublic).to.equal(true);
           });
       });
 
@@ -71,7 +72,7 @@ describe('Secret model', () => {
           .get('/api/secrets')
           .expect(200)
           .then(res => {
-            expect(res.body[0].userId).to.be.equal(null);
+            expect(res.body[0].userId).to.equal(null);
           });
       });
     });
@@ -80,7 +81,7 @@ describe('Secret model', () => {
       it('should return a 401 unauthorized error', () => {
         return request(app)
           .post('/api/secrets')
-          .send({ message: 'a brand new secret', isPublic: true, userId: 1 })
+          .send({ message: 'a brand new secret' })
           .expect(401);
       });
     });

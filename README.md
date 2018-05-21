@@ -22,6 +22,6 @@ Although anyone is welcome to fork this repo and try the workshop, this is parti
 * Running `npm test` or `npm run test-watch` will run your tests
 * Running `npm run start-dev` will start your local server and let you try out the application
 * Running `npm run seed` will seed the database
-* Instructions on how to do the workshop are in the `/workshop` folder
+* Instructions on how to do the workshop are in the [/workshop](https://github.com/mullaney/secrets/tree/master/workshop) folder
 
 For more information about some of the other features of boilermaker, checkout their [readme file](https://github.com/FullstackAcademy/boilermaker/blob/master/README.md). 
