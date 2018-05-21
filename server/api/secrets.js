@@ -63,6 +63,7 @@ router.put('/:id', isLoggedIn, belongsTo, (req, res, next) => {
 });
 
 router.delete('/:id', isLoggedIn, belongsTo, (req, res, next) => {
+  const userId = req.user && req.user.id ? req.user.id : null;
   Secret.destroy({
     where: {
       id: req.params.id,
