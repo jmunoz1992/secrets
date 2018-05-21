@@ -20,10 +20,6 @@ describe('User routes', () => {
       });
     });
 
-    after(() => {
-      return db.close();
-    });
-
     it('GET /api/users', () => {
       return request(app)
         .get('/api/users')
