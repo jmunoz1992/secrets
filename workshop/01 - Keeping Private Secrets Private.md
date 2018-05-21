@@ -5,36 +5,36 @@ Let's start with the route that gets the secrets in the first place. When we vis
 ```json
 [
   {
-    id: 1,
-    message: "I love the admin of this web site.",
-    isPublic: true,
-    createdAt: "2018-05-19T18:22:32.743Z",
-    updatedAt: "2018-05-19T18:22:32.743Z",
-    userId: 1
+    "id": 1,
+    "message": "I love the admin of this web site.",
+    "isPublic": true,
+    "createdAt": "2018-05-19T18:22:32.743Z",
+    "updatedAt": "2018-05-19T18:22:32.743Z",
+    "userId": 1
   },
   {
-    id: 2,
-    message: "Once I shoplifted from Macys.",
-    isPublic: false,
-    createdAt: "2018-05-19T18:22:32.743Z",
-    updatedAt: "2018-05-19T18:22:32.743Z",
-    userId: 1
+    "id": 2,
+    "message": "Once I shoplifted from Macys.",
+    "isPublic": false,
+    "createdAt": "2018-05-19T18:22:32.743Z",
+    "updatedAt": "2018-05-19T18:22:32.743Z",
+    "userId": 1
   },
   {
-    id: 3,
-    message: "I took the SAT for my sister. I got a terrible score.",
-    isPublic: true,
-    createdAt: "2018-05-19T18:22:32.743Z",
-    updatedAt: "2018-05-19T18:22:32.743Z",
-    userId: 2
+    "id": 3,
+    "message": "I took the SAT for my sister. I got a terrible score.",
+    "isPublic": true,
+    "createdAt": "2018-05-19T18:22:32.743Z",
+    "updatedAt": "2018-05-19T18:22:32.743Z",
+    "userId": 2
   },
   {
-    id: 4,
-    message: "I don't trust anyone like I trust my dog.",
-    isPublic: false,
-    createdAt: "2018-05-19T18:22:32.743Z",
-    updatedAt: "2018-05-19T18:22:32.743Z",
-    userId: 2
+    "id": 4,
+    "message": "I don't trust anyone like I trust my dog.",
+    "isPublic": false,
+    "createdAt": "2018-05-19T18:22:32.743Z",
+    "updatedAt": "2018-05-19T18:22:32.743Z",
+    "userId": 2
   }
 ]
 ```
