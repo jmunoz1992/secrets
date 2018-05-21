@@ -63,6 +63,7 @@ describe('Secret model', () => {
           .then(res => {
             expect(res.body).to.be.an('array');
             expect(res.body.length).to.be.equal(COUNT_PUBLIC);
+            expect(res.body[0].isPublic).to.equal(true);
           });
       });
 
