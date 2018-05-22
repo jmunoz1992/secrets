@@ -11,7 +11,7 @@ const isLoggedIn = (req, res, next) => {
 
 const belongsTo = (req, res, next) => {
   const userId = req.user.id;
-  Secret.findById(req.params.id)
+  Secret.findById(+req.params.id)
     .then(secret => {
       if (secret.userId !== userId) {
         res.sendStatus(401);
@@ -40,7 +40,12 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', isLoggedIn, (req, res, next) => {
-  Secret.create(req.body)
+  const secret = {
+    message: req.body.message,
+    userId: req.user.id
+  };
+
+  Secret.create(secret)
     .then(newSecret => res.status(201).json(newSecret))
     .catch(next);
 });

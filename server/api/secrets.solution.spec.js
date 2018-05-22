@@ -62,7 +62,9 @@ describe('Secret model', () => {
           .expect(200)
           .then(res => {
             expect(res.body).to.be.an('array');
-            expect(res.body.length).to.be.equal(COUNT_PUBLIC);
+            expect(res.body.length).to.equal(COUNT_PUBLIC);
+            expect(res.body[0].isPublic).to.equal(true);
+            expect(res.body[1].isPublic).to.equal(true);
           });
       });
 
@@ -71,7 +73,7 @@ describe('Secret model', () => {
           .get('/api/secrets')
           .expect(200)
           .then(res => {
-            expect(res.body[0].userId).to.be.equal(null);
+            expect(res.body[0].userId).to.equal(null);
           });
       });
     });
@@ -80,7 +82,7 @@ describe('Secret model', () => {
       it('should return a 401 unauthorized error', () => {
         return request(app)
           .post('/api/secrets')
-          .send({ message: 'a brand new secret', isPublic: true, userId: 1 })
+          .send({ message: 'a brand new secret' })
           .expect(401);
       });
     });
@@ -89,7 +91,7 @@ describe('Secret model', () => {
       it('should return a 401 unauthorized error', () => {
         return request(app)
           .put(`/api/secrets/${user1PrivateSecret.id}`)
-          .send({ isPublic: false })
+          .send({ isPublic: true })
           .expect(401);
       });
     });
@@ -137,12 +139,12 @@ describe('Secret model', () => {
       it('should create a new secret', () => {
         return authenticatedUser
           .post('/api/secrets')
-          .send({ message: 'a brand new secret', isPublic: true, userId: 1 })
+          .send({ message: 'a brand new secret' })
           .expect(201)
           .then(res => {
             expect(res.body.message).to.be.equal('a brand new secret');
-            expect(res.body.isPublic).to.be.equal(true);
             expect(res.body.userId).to.be.equal(1);
+            expect(res.body.isPublic).to.be.equal(false);
           });
       });
     });
@@ -156,20 +158,21 @@ describe('Secret model', () => {
         it('should update a secret', () => {
           return authenticatedUser
             .put(`/api/secrets/${user1PrivateSecret.id}`)
-            .send({ isPublic: false })
+            .send({ isPublic: true })
             .expect(200)
             .then(res => {
-              expect(res.body.isPublic).to.be.equal(false);
+              expect(res.body.isPublic).to.equal(true);
             });
         });
 
         it('should only update whether the secret isPublic', () => {
           return authenticatedUser
             .put(`/api/secrets/${user1PrivateSecret.id}`)
-            .send({ message: '99' })
+            .send({ message: '99', isPublic: true })
             .expect(200)
             .then(res => {
-              expect(res.body.message).to.be.equal(
+              expect(res.body.isPublic).to.equal(true);
+              expect(res.body.message).to.equal(
                 user1PrivateSecret.message
               );
             });
@@ -194,7 +197,7 @@ describe('Secret model', () => {
         it('should return a 401 unauthorized error', () => {
           return authenticatedUser
             .put(`/api/secrets/${user2PrivateSecret.id}`)
-            .send({ isPublic: false })
+            .send({ isPublic: true })
             .expect(401);
         });
       });
