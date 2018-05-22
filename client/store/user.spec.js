@@ -34,7 +34,7 @@ describe('thunk creators', () => {
       return store.dispatch(me())
         .then(() => {
           const actions = store.getActions();
-          expect(actions[0].type).to.be.equal('GET_USER');
+          expect(actions[0].type).to.equal('GET_USER');
           expect(actions[0].user).to.be.deep.equal(fakeUser);
         });
     });
@@ -46,8 +46,8 @@ describe('thunk creators', () => {
       return store.dispatch(logout())
         .then(() => {
           const actions = store.getActions();
-          expect(actions[0].type).to.be.equal('REMOVE_USER');
-          expect(history.location.pathname).to.be.equal('/');
+          expect(actions[0].type).to.equal('REMOVE_USER');
+          expect(history.location.pathname).to.equal('/');
         });
     });
   });

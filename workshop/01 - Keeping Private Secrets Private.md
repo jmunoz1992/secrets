@@ -119,7 +119,7 @@ it('should return public secrets and their private secrets', () => {
     .expect(200)
     .then(res => {
       expect(res.body).to.be.an('array');
-      expect(res.body.length).to.be.equal(COUNT_PUBLIC + COUNT_USER1_PRIVATE);
+      expect(res.body.length).to.equal(COUNT_PUBLIC + COUNT_USER1_PRIVATE);
     });
 });
 ```
