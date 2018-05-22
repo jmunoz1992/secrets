@@ -39,9 +39,9 @@
 //         .send({ message: 'a brand new secret', isPublic: true, userId: 1 })
 //         .expect(201)
 //         .then(res => {
-//           expect(res.body.message).to.be.equal('a brand new secret');
-//           expect(res.body.isPublic).to.be.equal(true);
-//           expect(res.body.userId).to.be.equal(1);
+//           expect(res.body.message).to.equal('a brand new secret');
+//           expect(res.body.isPublic).to.equal(true);
+//           expect(res.body.userId).to.equal(1);
 //         });
 //     });
 //   });
@@ -53,7 +53,7 @@
 //         .send({ isPublic: false })
 //         .expect(200)
 //         .then(res => {
-//           expect(res.body.isPublic).to.be.equal(false);
+//           expect(res.body.isPublic).to.equal(false);
 //         });
 //     });
 //   });

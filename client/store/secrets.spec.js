@@ -81,7 +81,7 @@ describe('Passages store', () => {
         return store.dispatch(fetchSecrets())
           .then(() => {
             const actions = store.getActions();
-            expect(actions[0].type).to.be.equal(GOT_SECRETS);
+            expect(actions[0].type).to.equal(GOT_SECRETS);
             expect(actions[0].secrets).to.deep.equal(fakeSecrets);
           });
       });
@@ -94,7 +94,7 @@ describe('Passages store', () => {
         return store.dispatch(createSecret(fakeSecret))
           .then(() => {
             const actions = store.getActions();
-            expect(actions[0].type).to.be.equal(GOT_ONE_SECRET);
+            expect(actions[0].type).to.equal(GOT_ONE_SECRET);
             expect(actions[0].secret).to.deep.equal(fakeSecret);
           });
       });
@@ -107,7 +107,7 @@ describe('Passages store', () => {
         return store.dispatch(updateSecret(fakeSecret))
           .then(() => {
             const actions = store.getActions();
-            expect(actions[0].type).to.be.equal(GOT_UPDATED_SECRET);
+            expect(actions[0].type).to.equal(GOT_UPDATED_SECRET);
             expect(actions[0].secret).to.deep.equal(fakeSecret);
           });
       });
@@ -119,7 +119,7 @@ describe('Passages store', () => {
         return store.dispatch(destroySecret(1))
           .then(() => {
             const actions = store.getActions();
-            expect(actions[0].type).to.be.equal(REMOVE_SECRET);
+            expect(actions[0].type).to.equal(REMOVE_SECRET);
             expect(actions[0].secretId).to.equal(1);
           });
       });
