@@ -11,7 +11,7 @@ const isLoggedIn = (req, res, next) => {
 
 const belongsTo = (req, res, next) => {
   const userId = req.user.id;
-  Secret.findById(req.params.id)
+  Secret.findById(+req.params.id)
     .then(secret => {
       if (secret.userId !== userId) {
         res.sendStatus(401);
@@ -68,11 +68,9 @@ router.put('/:id', isLoggedIn, belongsTo, (req, res, next) => {
 });
 
 router.delete('/:id', isLoggedIn, belongsTo, (req, res, next) => {
-  const userId = req.user && req.user.id ? req.user.id : null;
   Secret.destroy({
     where: {
-      id: req.params.id,
-      userId: userId
+      id: req.params.id
     }
   })
     .then(() => res.sendStatus(204))
