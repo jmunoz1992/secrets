@@ -53,7 +53,7 @@ it('should return only the secrets which are public');
 * Expect that the api responds with a 200 status
 * Then take the `res`ponse and check the body to make sure it's an array
 * And that the body has a length of 2, since there are only 2 public secrets in the seed file
-* Finally expect that isPublic for the first secret is true
+* Finally write two expect methods to test that each of the 2 secrets has isPublic set to true
 
 When you are done your test should look something like this:
 

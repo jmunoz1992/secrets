@@ -64,6 +64,7 @@ describe('Secret model', () => {
             expect(res.body).to.be.an('array');
             expect(res.body.length).to.equal(COUNT_PUBLIC);
             expect(res.body[0].isPublic).to.equal(true);
+            expect(res.body[1].isPublic).to.equal(true);
           });
       });
 
@@ -138,12 +139,12 @@ describe('Secret model', () => {
       it('should create a new secret', () => {
         return authenticatedUser
           .post('/api/secrets')
-          .send({ message: 'a brand new secret', isPublic: true, userId: 1 })
+          .send({ message: 'a brand new secret' })
           .expect(201)
           .then(res => {
             expect(res.body.message).to.be.equal('a brand new secret');
-            expect(res.body.isPublic).to.be.equal(true);
             expect(res.body.userId).to.be.equal(1);
+            expect(res.body.isPublic).to.be.equal(false);
           });
       });
     });

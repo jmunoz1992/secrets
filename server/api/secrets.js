@@ -40,7 +40,12 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', isLoggedIn, (req, res, next) => {
-  Secret.create(req.body)
+  const secret = {
+    message: req.body.message,
+    userId: req.user.id
+  };
+
+  Secret.create(secret)
     .then(newSecret => res.status(201).json(newSecret))
     .catch(next);
 });
