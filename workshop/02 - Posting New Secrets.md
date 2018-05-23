@@ -15,7 +15,9 @@ router.post('/', (req, res, next) => {
 Look for the `it` method within the `POST /api/secrets` describe block like this:
 
 ```javascript
-it('should return a 401 unauthorized error');
+describe('POST /api/secrets', () => {
+  it('should return a 401 unauthorized error');
+});
 ```
 
 For this test add the following steps within the callback function:

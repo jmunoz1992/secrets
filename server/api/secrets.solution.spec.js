@@ -7,9 +7,6 @@ const assert = require('assert');
 const app = require('../index');
 const request = require('supertest');
 
-const COUNT_PUBLIC = seedSecrets.filter(secret => secret.isPublic).length;
-const COUNT_USER1_PRIVATE = seedSecrets.filter(secret => secret.isPublic === false && secret.userId === 1).length;
-
 describe('Secret model - Worshop Solution', () => {
   let user1PrivateSecret = {};
   let user2PrivateSecret = {};

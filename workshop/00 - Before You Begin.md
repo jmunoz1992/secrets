@@ -25,7 +25,7 @@ After you log out, can you still see the public secret you made? Can you see the
 * See the author of all secrets as 'anonymous'
 * Not see any buttons which allow you to change or delete the secrets
 
-Now make another new user and log in. You can just Can you see the private secret of the first user? Can you update or delete them?
+Now make another new user and log in. Can you see the private secret of the first user? Can you update or delete them?
 
 It would appear that the application is secure. Users cannot see each other's private secrets. They can't change or delete secrets except their own. And they can't see anything that identifies the user that published a public secret.
 
@@ -48,7 +48,7 @@ Using simple curl commands. Anyone can post new secrets, update them (including 
 
 ## So what's the plan?
 
-The API is in bad shape right now. All of our routes are insecure, but we can fix them! We can make our secrets app more private. And we are going to use Test Driven Development to get us there.
+The API is in bad shape right now. All of our routes are insecure, but we can fix them! We can make our Secrets Application more private. And we are going to use Test Driven Development to get us there.
 
 **But why are you making us use tests?!?!?!? Tests are hard to write! They double or even triple our coding time!**
 
