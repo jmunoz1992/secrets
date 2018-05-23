@@ -39,17 +39,19 @@ Let's start with the route that gets the secrets in the first place. When we vis
 ]
 ```
 
-The biggest thing we need to do is to only return messages that are meant to be public. Before we write the code, we will need to write the test. Open up `/server/api/secrets.solution.spec.js` and take a look at the structure. Note that a lot of the prep work has been filled in for you. We have a beforeEach method at the beginning of the first describe block that achieves two things. First it seeds the database with data from a seed file. 
+First we need to make sure we are returning only the public secrets. Before we write the code, we will need to write the test. Open up `/server/api/secrets.solution.spec.js` and take a look at the structure. Note that a lot of the prep work has been filled in for you. We have a beforeEach method at the beginning of the first describe block that achieves two things. First it seeds the database with data from a seed file. 
 
-Second it finds the user with id 1. And two private secrets which we will need later. One that belongs to user 1 and one that does not.
+Second it finds the user with id 1, and two private secrets which we will need later. One that belongs to user 1 and one that does not.
 
-Now let's write our first test. Find the first it block in the file:
+## Guests Should Not See Private Secrets
+
+Let's write our first test. Find the first it block in the file:
 
 ```javascript
 it('should return only the secrets which are public'); 
 ```
 * Add an arrow function as the second argument for the `it` method
-* Use the request object to get `/api/secrets`
+* Use request(app) to make a get request to `/api/secrets`
 * Expect that the api responds with a 200 status
 * Then take the `res`ponse and check the body to make sure it's an array
 * And that the body has a length of 2, since there are only 2 public secrets in the seed file
@@ -66,10 +68,11 @@ it('should return only the secrets which are public', () => {
       expect(res.body).to.be.an('array');
       expect(res.body.length).to.equal(2);
       expect(res.body[0].isPublic).to.equal(true);
+      expect(res.body[1].isPublic).to.equal(true);
     });
 });
 ```
-Let's run the test and make sure it fails. What I like to do is to run mocha with the -w flag, so that it automatically runs the tests again whenver someothing changes. Try it by running `npm run test-watch`.
+Let's run the test and make sure it fails. I've set up a test-watch script for this workshop. Try it by running `npm run test-watch`.
 
 Your test should be failing, and our first step completed. Now let's look at the existing code and see if we can change it to pass our specs.
 
@@ -97,12 +100,16 @@ router.get('/', (req, res, next) => {
 });
 ```
 
-Now we need to build another test for when an authenticated user grabs all the secrets. In addition to all the public secrets, they should also grab their own private ones. First let's write the test. Find this test:
+## Authenticated Users Should See Their Own Private Secrets
+
+Now we need to build another test for when an authenticated user grabs all the secrets. In addition to all the public secrets, they should also grab their own private ones. First let's write the test. Find this it method:
 
 ```javascript
 it('should return public secrets and their private secrets');
 ```
-It should be in the middle of the file, part of the 'with authenticated user' describe block. Before you begin, take a look at the beforeEach right before it. For these set of tests we will first login an authenticated user. To do this we need create an agent using the request.agent method. Then in the before each we use that agent to log in. Notice that we added a test witin the beforeEach block which tests to make sure that the login succeeded. Now we are ready to do the actual test.
+It should be in the middle of the file, part of the 'with authenticated user' describe block. 
+
+Before you begin, take a look at the beforeEach for this section. For these tests it first logs in an authenticated user. To do this we use an agent created by the request.agent() method. Then in the before each we use that agent to log in. Notice that we added an assertion within the beforeEach block which tests to make sure that the login succeeded. Now we are ready to do the actual test.
 
 Now within the it method:
 * Add a get request to `/api/secrets`
@@ -119,7 +126,7 @@ it('should return public secrets and their private secrets', () => {
     .expect(200)
     .then(res => {
       expect(res.body).to.be.an('array');
-      expect(res.body.length).to.equal(COUNT_PUBLIC + COUNT_USER1_PRIVATE);
+      expect(res.body.length).to.equal(3);
     });
 });
 ```
