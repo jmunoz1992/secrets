@@ -57,3 +57,5 @@ Tests can be hard to write, especially if you have never seen a test similar to 
 And this workshop will show you how to write those tests, which will make the whole process much easier. 
 
 So are you ready to begin? Let's do it!
+
+**[01 Keeping Private Secrets Private](./01_Keeping_Private_Secrets_Private.md)
