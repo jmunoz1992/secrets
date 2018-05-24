@@ -1,3 +1,11 @@
+/*
+  These tests are for the starting point for the workshop.
+  You can leave them commented out. You can also use them
+  for reference. But the tests you will write should be
+  in secrets.solution.spec.js
+*/
+
+
 // const { expect } = require('chai');
 // const db = require('../db/index');
 // const Secret = db.model('secret');
@@ -7,7 +15,7 @@
 // const app = require('../index');
 // const request = require('supertest');
 
-// describe('Secret model', () => {
+// xdescribe('Secret model', () => {
 //   let users = [];
 //   let secrets = [];
 
