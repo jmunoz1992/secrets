@@ -21,6 +21,8 @@ Why are we trying to use isPublic: true? Because we we know that is the thing we
 
 Now your test should look something like this:
 
+<details><summary><strong>Solution Hint:</strong></summary>
+
 ```javascript
 describe('PUT /api/secrets/:id', () => {
   it('should return a 401 unauthorized error', () => {
@@ -31,6 +33,7 @@ describe('PUT /api/secrets/:id', () => {
   });
 });
 ```
+</details><br />
 
 Currently our put method in the router looks like this:
 
@@ -44,6 +47,8 @@ router.put('/:id', (req, res, next) => {
 ```
 Notice that there is no check to make sure someone is logged in. Let's add one! (Hint: this check could be like the one we used in the last section)
 
+<details><summary><strong>Solution Hint:</strong></summary>
+
 ```javascript
 router.put('/:id', (req, res, next) => {
   if (!req.user) {
@@ -56,6 +61,8 @@ router.put('/:id', (req, res, next) => {
   }
 });
 ```
+</details><br />
+
 Voila! We should be passing again. Now lets write a test to make sure that users who are logged in can edit their own secret. Look for this test inside the authenticated user section of the test file:
 
 ```javascript
@@ -74,6 +81,8 @@ This test should:
 
 See if you can do it and then check the solution below:
 
+<details><summary><strong>Solution Hint:</strong></summary>
+
 ```javascript
 it('should update a secret', () => {
   return authenticatedUser
@@ -85,6 +94,7 @@ it('should update a secret', () => {
     });
 });
 ```
+</details><br />
 
 While we are at it, let's write the other test for authenticated users, the one where a user is attempting to edit someone else's secret:
 
@@ -99,7 +109,9 @@ Again this one should use the authenticatedUser agent:
 * Send the same object: `{ isPublic: true }`
 * Expect a 401 response
 
-Here is the test I wrote:
+Here is one solution:
+
+<details><summary><strong>Solution Hint:</strong></summary>
 
 ```javascript
 it('should return a 401 unauthorized error', () => {
@@ -109,10 +121,13 @@ it('should return a 401 unauthorized error', () => {
     .expect(401);
 });
 ```
+</details><br />
 
 Now we have 2 failing tests. Let's see if we can get them working both working. We will need to add a test to make sure that the userId of the secret matches the user making the request. 
 
-Give it a try and then check out a solution below. For this one I decided to use async/await.
+Give it a try and then check out a solution below. For this one, I used async/await.
+
+<details><summary><strong>Solution Hint:</strong></summary>
 
 ```javascript
 router.put('/:id', async (req, res, next) => {
@@ -132,6 +147,8 @@ router.put('/:id', async (req, res, next) => {
   }
 });
 ```
+</details><br />
+
 Did you see that req.body problem again? We will once again need to write a test to make sure we didn't use req.body and allow users to update whatever they like. 
 
 Find this test in your secrets.solution.spec.js file:
@@ -149,6 +166,8 @@ Use the authenticatedUser:
 
 Here is an example of the test:
 
+<details><summary><strong>Solution Hint:</strong></summary>
+
 ```javascript
 it('should only update whether the secret isPublic', () => {
   return authenticatedUser
@@ -163,8 +182,11 @@ it('should only update whether the secret isPublic', () => {
     });
 });
 ```
+</details><br />
 
 This test should fail, because the route as written does allow users to update secrets. You can change it like this to make it work:
+
+<details><summary><strong>Solution Hint:</strong></summary>
 
 ```javascript
 router.put('/:id', async (req, res, next) => {
@@ -184,6 +206,7 @@ router.put('/:id', async (req, res, next) => {
   }
 });
 ```
+</details><br />
 
 Now isPublic is the only thing the user can update.
 

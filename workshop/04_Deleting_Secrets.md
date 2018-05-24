@@ -23,6 +23,8 @@ Within this test use the request(app) to:
 
 Try to write the test and then look at the solution below:
 
+<details><summary><strong>Solution Hint:</strong></summary>
+
 ```javascript
 describe('DELETE /api/secrets', () => {
   it('should return a 401 unauthorized error', () => {
@@ -32,6 +34,7 @@ describe('DELETE /api/secrets', () => {
   });
 });
 ```
+</details><br />
 
 Next find the other it method within the section for when the user DOES NOT own the secret. It will be all the way at the bottom.
 
@@ -42,6 +45,8 @@ Again follow the same steps. It will be nearly identical except for two importan
 
 When you are ready see the solution below:
 
+<details><summary><strong>Solution Hint:</strong></summary>
+
 ```javascript
 describe('DELETE /api/secrets', () => {
   it('should return a 401 unauthorized error', () => {
@@ -51,6 +56,8 @@ describe('DELETE /api/secrets', () => {
   });
 });
 ```
+</details><br />
+
 We have one final test to write for when a user tries to delete their own secret. Look for this 'it' method:
 
 ```javascript
@@ -61,6 +68,8 @@ describe('DELETE /api/secrets', () => {
 
 Again this should be very similar to the other tests. See if you can figure out this one without the explicit steps spelled out. And when you are ready look at the solution below.
 
+<details><summary><strong>Solution Hint:</strong></summary>
+
 ```javascript
 describe('DELETE /api/secrets', () => {
   it('should delete a secret', () => {
@@ -70,6 +79,7 @@ describe('DELETE /api/secrets', () => {
   });
 });
 ```
+</details><br />
 
 If you take look at our existing tests. You will notice that there is a test for the route `DELETE /api/secrets/:id`:
 
@@ -101,6 +111,8 @@ Let's see if we can change the route so all three pass.
 
 See if you can figure it out on your own. And when you are ready, check the solution below.
 
+<details><summary><strong>Solution Hint:</strong></summary>
+
 ``` javascript
 router.delete('/:id', async (req, res, next) => {
   if (!req.user) {
@@ -121,6 +133,8 @@ router.delete('/:id', async (req, res, next) => {
   return
 });
 ```
+</details><br />
+
 First, we check to make sure there is someone logged in. If a guest (or non-logged in user) hits this route, we send a 401 status in that case. 
 
 Great! We now have all the tests passing and we know our API is more secure than when we started.
