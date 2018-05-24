@@ -61,6 +61,8 @@ it('should return only the secrets which are public');
 
 When you are done your test should look something like this:
 
+<details><summary><strong>Solution Hint:</strong></summary>
+
 ```javascript
 it('should return only the secrets which are public', () => {
   return request(app)
@@ -74,6 +76,8 @@ it('should return only the secrets which are public', () => {
     });
 });
 ```
+</details><br />
+
 Let's run the test and make sure it fails. I've set up a test-watch script for this workshop. Try it by running `npm run test-watch`.
 
 Your test should be failing, and our first step completed. Now let's look at the existing code and see if we can change it to pass our specs.
@@ -91,6 +95,8 @@ As you can see, it just grabs all the secrets and sends them out in the response
 
 This should work:
 
+<details><summary><strong>Solution Hint:</strong></summary>
+
 ```javascript
 router.get('/', (req, res, next) => {
   Secret.findAll()
@@ -101,6 +107,7 @@ router.get('/', (req, res, next) => {
     .catch(next);
 });
 ```
+</details>
 
 ## Authenticated Users Should See Their Own Private Secrets
 
@@ -121,6 +128,8 @@ Now within the it method:
 
 The final test would look like this:
 
+<details><summary><strong>Solution Hint:</strong></summary>
+
 ```javascript
 it('should return public secrets and their private secrets', () => {
   return authenticatedUser
@@ -132,10 +141,13 @@ it('should return public secrets and their private secrets', () => {
     });
 });
 ```
+</details><br />
 
 There are a few ways we could do this, but one way would be to alter our secrets filter to include items where the userId matches our user's id. 
 
 See the solution below:
+
+<details><summary><strong>Solution Hint:</strong></summary>
 
 ```javascript
 router.get('/', (req, res, next) => {
@@ -150,6 +162,8 @@ router.get('/', (req, res, next) => {
     .catch(next);
 });
 ```
+</details><br />
+
 Note that if you need to make sure req.user exists before checking for req.user.id or you may get an error when there isn't a user. Now our filter will include all public secrets and all secrets owned by the current user.
 
 Lastly, we want to make one more change. We want to hide the actual userIds in the secret data from the API. We could just prevent that info from being sent altogether, but we do need the userId when it matches the current user. So we have one more test to fill in. Look for the it block like this:
