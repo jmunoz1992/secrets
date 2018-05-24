@@ -1,5 +1,7 @@
 # Deleting Secrets
 
+*Previous:* **[03 Updating Secrets](./03_Updating_Secrets.md)**
+
 We only have a few more tests to write! Are you excited? 
 
 These tests will be a little simpler than the ones for update. We need three tests for three different cases:
@@ -124,3 +126,5 @@ First, we check to make sure there is someone logged in. If a guest (or non-logg
 Great! We now have all the tests passing and we know our API is more secure than when we started.
 
 Your next mission, should you choose to accept it, is refactor!
+
+*Next:* **[05 Refactor](./05_Refactor.md)**

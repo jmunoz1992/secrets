@@ -58,4 +58,4 @@ And this workshop will show you how to write those tests, which will make the wh
 
 So are you ready to begin? Let's do it!
 
-**[01 Keeping Private Secrets Private](./01_Keeping_Private_Secrets_Private.md)
+*Next:* **[01 Keeping Private Secrets Private](./01_Keeping_Private_Secrets_Private.md)**

@@ -1,5 +1,7 @@
 # Posting New Secrets
 
+*Previous:* **[01 Keeping Private Secrets Private](./01_Keeping_Private_Secrets_Private.md)**
+
 Even though the client doesn't allow for users to create new secrets, they actually could by using Postman or curl and accessing the API directly. This is not what we want. So once again we need to write two tests and change our code to prevent people from posting a new secret, unless they are logged in.
 
 Here is the current code in our API which handles POST requests:
@@ -149,4 +151,5 @@ Now the post method only sets the message using req.body. Anything else that the
 Cool! Now our post method is much more secure than it was. We have tests to make sure that only authenticated users can creat secrets. That users can only set the message initially for a new secret. And that the userId should match the user that created the message.
 
 When you are ready, lets move on to updates and the push method.
-  
+
+*Next:* **[03 Updating Secrets](./03_Updating_Secrets.md)**

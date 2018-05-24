@@ -1,5 +1,7 @@
 # Keeping Private Secrets Private
 
+*Previous:* **[00 Before You Begin](./00_Before_You_Begin.md)**
+
 Let's start with the route that gets the secrets in the first place. When we visit `/api/secrets` we currently get something like this:
 
 ```json
@@ -185,3 +187,5 @@ router.get('/', (req, res, next) => {
 ```
 
 Check the tests, is everything passing again? If so, let's move on to the POST route.
+
+*Next:* **[02 Posting New Secrets](./02_Posting_New_Secrets.md)**
