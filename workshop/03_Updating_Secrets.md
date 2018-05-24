@@ -1,5 +1,7 @@
 # Updating Secrets
 
+*Previous:* **[02 Posting New Secrets](./02_Posting_New_Secrets.md)**
+
 For this section (and the one on delete), we are going to add a new wrinkle. Not only do we need a test to make sure that guest users cannot edit an existing secret, we also need to make sure that users can't edit someone else's secret. And we still need a test to make sure that a user can edit their own secret. So in total need three tests.
 
 Find the first it method, the one inside the guest describe block:
@@ -186,3 +188,5 @@ router.put('/:id', async (req, res, next) => {
 Now isPublic is the only thing the user can update.
 
 Onward to the delete methods!
+
+*Next:* **[04 Deleting Secrets](./04_Deleting_Secrets.md)**
