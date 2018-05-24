@@ -166,6 +166,7 @@ Why not just roll this test into the other test just before it? You could, but t
 
 Now that we have our newly failing test. Let's fix the code to make this work. One way we can do it, is to take the secrets array and map it to another array that alters the userId if it doesn't match the current user.
 
+<details><summary>Solution:</summary>
 ```javascript
 router.get('/', (req, res, next) => {
   const userId = req.user && req.user.id ? req.user.id : null;
@@ -185,6 +186,7 @@ router.get('/', (req, res, next) => {
   .catch(next);
 });
 ```
+</details>
 
 Check the tests, is everything passing again? If so, let's move on to the POST route.
 
