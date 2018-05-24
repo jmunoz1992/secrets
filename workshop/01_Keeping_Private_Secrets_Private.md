@@ -188,9 +188,8 @@ router.get('/', (req, res, next) => {
 });
 ```
 
-</details>
+</details><br />
 
 Check the tests, is everything passing again? If so, let's move on to the POST route.
-
 
 *Next:* **[02 Posting New Secrets](./02_Posting_New_Secrets.md)**
