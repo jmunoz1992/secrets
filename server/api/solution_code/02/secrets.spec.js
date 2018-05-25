@@ -1,9 +1,18 @@
+/*
+  This is the file where you will write your specs for the workshop
+*/
+
+// Using both assert and expect libaries with mocha
 const { expect } = require('chai');
+const assert = require('assert');
+
+// Database, models and seed
 const db = require('../db/index');
 const Secret = db.model('secret');
 const User = db.model('user');
 const { seedSecrets, seedUsers } = require('../../script/test-seeds');
-const assert = require('assert');
+
+// Supertest for testing API routes
 const app = require('../index');
 const request = require('supertest');
 
@@ -53,13 +62,35 @@ describe('Secret model - Worshop Solution', () => {
 
   describe('guests', () => {
     describe('GET /api/secrets', () => {
-      it('should return only the secrets which are public');
+      it('should return only the secrets which are public', () => {
+        return request(app)
+          .get('/api/secrets')
+          .expect(200)
+          .then(res => {
+            expect(res.body).to.be.an('array');
+            expect(res.body.length).to.equal(2);
+            expect(res.body[0].isPublic).to.equal(true);
+            expect(res.body[1].isPublic).to.equal(true);
+          });
+      });
 
-      it('should not return the userId or any data besides the message');
+      it('should not return the userId or any data besides the message', () => {
+        return request(app)
+          .get('/api/secrets')
+          .expect(200)
+          .then(res => {
+            expect(res.body[0].userId).to.equal(null);
+          });
+      });
     });
 
     describe('POST /api/secrets', () => {
-      it('should return a 401 unauthorized error');
+      it('should return a 401 unauthorized error', () => {
+        return request(app)
+          .post('/api/secrets/')
+          .send({ message: 'This is a new secret' })
+          .expect(401);
+      });
     });
 
     describe('PUT /api/secrets/:id', () => {
@@ -90,11 +121,35 @@ describe('Secret model - Worshop Solution', () => {
     });
 
     describe('GET /api/secrets', () => {
-      it('should return public secrets and their private secrets');
+      it('should return public secrets and their private secrets', () => {
+        return authenticatedUser
+          .get('/api/secrets')
+          .expect(200)
+          .then(res => {
+            expect(res.body).to.be.an('array');
+            expect(res.body.length).to.equal(3);
+          });
+      });
     });
 
     describe('POST /api/secrets', () => {
-      it('should create a new secret');
+      it('should create a new secret', () => {
+        return authenticatedUser
+          .post('/api/secrets')
+          .send({
+            message: 'a brand new secret',
+            isPublic: true,
+            userId: 3,
+            id: 99
+          })
+          .expect(201)
+          .then(res => {
+            expect(res.body.message).to.equal('a brand new secret');
+            expect(res.body.userId).to.equal(1);
+            expect(res.body.id).to.not.equal(99);
+            expect(res.body.isPublic).to.equal(true);
+          });
+      });
     });
 
     /*

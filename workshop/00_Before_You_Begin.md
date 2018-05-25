@@ -50,10 +50,23 @@ Using simple curl commands. Anyone can post new secrets, update them (including 
 
 The API is in bad shape right now. All of our routes are insecure, but we can fix them! We can make our Secrets Application more private. And we are going to use Test Driven Development to get us there.
 
-**But why are you making us use tests?!?!?!? Tests are hard to write! They double or even triple our coding time!**
+***Why Test First?***
 
 Tests can be hard to write, especially if you have never seen a test similar to the one you want to write. But writing them will save you time. Why? Because making a change and rerunning your tests will take a few seconds. Doing the same thing with postman, or curl or some other method that requires you to manually try each route would be tedious, and much more time consuming than just writing the tests.
 
-And this workshop will show you how to write those tests, which will make the whole process much easier. 
+And this workshop will show you how to write those tests, which will make the whole process much easier.
+
+## Hints
+
+A quick note before we begin. As you work through the workshop, all the solution code should be available within hint blocks. Just look for the arrows with 'Solution Hint' next to it and click on the text to see the full code:
+
+<details><summary><strong>Solution Hint:</strong></summary>
+
+```javascript
+const solution = 'right here!'
+```
+</details><br />
 
 So are you ready to begin? Let's do it!
+
+*Next:* **[01 Keeping Private Secrets Private](./01_Keeping_Private_Secrets_Private.md)**

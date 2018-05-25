@@ -18,6 +18,17 @@ This project was built using [Boilermaker](https://github.com/FullstackAcademy/b
 
 Although anyone is welcome to fork this repo and try the workshop, this is particularly made for students of Fullstack Academy. It is designed to complete near the end of the Junior phase of the program. If you want to know how to secure your express api routes, this workshop will help. You may also want to take a look at the specs for the react components (using enzyme) and for redux as well. These tests are already complete and part of the starting point for the workshop.
 
+If you are not a student from Fullstack Academy. You will need to be familiar with these technologies and/or libaries.
+
+* Express.js - used to set up your server running in node.js
+* Sequelize - an ORM to interact with your database
+* Mocha & Chai - for testing
+* Supertest - for testing API routes
+
+You only need a basic understanding of Supertest, as you will gain experience writing tests using supertest in this workshop.
+
+This project also uses React and Redux, however, it does not affect the workhshop.
+
 ## Setup for the Workshop:
 
 * Fork this repo and use `git clone` to copy it to your local machine
