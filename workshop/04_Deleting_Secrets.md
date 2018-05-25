@@ -75,7 +75,7 @@ describe('DELETE /api/secrets', () => {
   it('should delete a secret', () => {
     return authenticatedUser
       .delete(`/api/secrets/${user1PrivateSecret.id}`)
-      .expect(204);
+      .expect(200);
   });
 });
 ```
@@ -114,23 +114,20 @@ See if you can figure it out on your own. And when you are ready, check the solu
 <details><summary><strong>Solution Hint:</strong></summary>
 
 ``` javascript
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', (req, res, next) => {
   if (!req.user) {
     res.sendStatus(401);
   } else {
-    try {
-      const secret = await Secret.findById(+req.params.id)
-      if (secret.id === req.user.id) {
-        await secret.destroy()
-        res.sendStatus(204);
-      } else {
-        res.sendStatus(401);
-      }
-    } catch(err) {
-      next(err)
-    }
+    Secret.findById(req.params.id)
+      .then(secret => {
+        if (secret.userId !== req.user.id) {
+          res.sendStatus(401);
+        } else {
+          return res.sendStatus(200);
+        }
+      })
+      .catch(next);
   }
-  return
 });
 ```
 </details><br />
