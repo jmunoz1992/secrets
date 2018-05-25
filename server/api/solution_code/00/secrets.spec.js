@@ -1,9 +1,18 @@
+/*
+  This is the file where you will write your specs for the workshop
+*/
+
+// Using both assert and expect libaries with mocha
 const { expect } = require('chai');
+const assert = require('assert');
+
+// Database, models and seed
 const db = require('../db/index');
 const Secret = db.model('secret');
 const User = db.model('user');
 const { seedSecrets, seedUsers } = require('../../script/test-seeds');
-const assert = require('assert');
+
+// Supertest for testing API routes
 const app = require('../index');
 const request = require('supertest');
 
