@@ -2,7 +2,7 @@
 
 *Previous:* **[01 Keeping Private Secrets Private](./01_Keeping_Private_Secrets_Private.md)**
 
-Even though the client doesn't allow for users to create new secrets, they actually could by using Postman or curl and accessing the API directly. This is not what we want. So once again we need to write two tests and change our code to prevent people from posting a new secret, unless they are logged in.
+Even though the client doesn't allow for users to create new secrets, they actually could by using Postman or curl to access the API directly. This is not what we want. So once again we need to write tests and change our code to prevent people from posting a new secret, unless they are logged in.
 
 Here is the current code in our API which handles POST requests:
 
@@ -24,7 +24,7 @@ describe('POST /api/secrets', () => {
 
 For this test add the following steps within the callback function:
 
-* Use the request(app) method to post to `/api/secrets/:id`. For the :id use the `user1PrivateSecret.id`
+* Use the request(app) method to post to `/api/secrets/`
 * Send an object with a key/value pair for the message of the secret you are creating
 * Expect a 401 unauthorized status (because your a guest!)
 
@@ -33,12 +33,12 @@ Give it a try and then compare it to the solution below:
 <details><summary><strong>Solution Hint:</strong></summary>
 
 ```javascript
-it('should return a 401 unauthorized error', () => {
-  return request(app)
-    .post('/api/secrets')
-    .send({ message: 'a brand new secret' })
-    .expect(401);
-});
+  it('should return a 401 unauthorized error', () => {
+    return request(app)
+      .post('/api/secrets/')
+      .send({ message: 'This is a new secret' })
+      .expect(401);
+  });
 ```
 </details><br />
 
@@ -64,7 +64,9 @@ router.post('/', (req, res, next) => {
 We still need a test for an authorized user. Find the it method like this in the 'with authenticated user' describe block:
 
 ```javascript
-it('should create a new secret');
+  describe('POST /api/secrets', () => {
+    it('should create a new secret');
+  });
 ```
 
 Once again we will return the authenticatedUser agent rather than just using request(app). 
@@ -121,31 +123,51 @@ You might have noticed that we pass the req.body object directly into our .creat
 
 Keep in mind, that as your application grows, your models may gain new columns which you don't want users to be able to set directly.
 
-You may have also noticed that when you create a secret using the app, it always saves the secret as a private secret. You have to choose to make it public after it's created. We can test for both of these behaviors at the same time.
+Let's alter our existing POST test from above. First change the object you send to this:
 
-Let's alter our existing POST test from above. Add two things. First in the send object, add a key value pair of, `isPublic: true`. Then in the tests add one more expectation, that the secret returned after it's created will be have isPublic set to false.
+```json
+{
+  message: 'a brand new secret',
+  isPublic: true,
+  userId: 3,
+  id: 99
+}
+``` 
+
+Two of these properties, message and isPublic, are ones that a user should be able to set. userId and id are properties that a user should not be able to set. So let's change our expectations accordingly:
+* Add an expectation that the id NOT equal 99
+* Add an expectation that isPublic is true
+* Keep the two existing expectations as ther are now
 
 When you are ready, look at the solution below:
 
 <details><summary><strong>Solution Hint:</strong></summary>
 
 ```javascript
-it('should create a new secret', () => {
-  return authenticatedUser
-    .post('/api/secrets')
-    .send({ message: 'a brand new secret', isPublic: true })
-    .expect(201)
-    .then(res => {
-      expect(res.body.message).to.equal('a brand new secret');
-      expect(res.body.userId).to.equal(1);
-      expect(res.body.isPublic).to.equal(false);
-    });
+describe('POST /api/secrets', () => {
+  it('should create a new secret', () => {
+    return authenticatedUser
+      .post('/api/secrets')
+      .send({
+        message: 'a brand new secret',
+        isPublic: true,
+        userId: 3,
+        id: 99
+      })
+      .expect(201)
+      .then(res => {
+        expect(res.body.message).to.equal('a brand new secret');
+        expect(res.body.userId).to.equal(1);
+        expect(res.body.id).to.not.equal(99);
+        expect(res.body.isPublic).to.equal(true);
+      });
+  });
 });
 ```
 
 </details><br />
 
-How can we make this test pass? Well, we can take advantage of the fact that the model sets a default value of false for isPublic. And in our router post method, we can extract out specifically what we want from the req.body. See if you can change the post model to accomodate this.
+How can we make this test pass? Instead of just passing the req.body into the create method, we can build an object and only use particular values from the req.body object. See if you can change the post method to pass our new tests.
 
 And then check out the solution below:
 
@@ -157,8 +179,9 @@ router.post('/', (req, res, next) => {
     res.sendStatus(401);
   } else {
     Secret.create({
-      userId: req.user.id,
-      message: req.body.message
+      message: req.body.message,
+      isPublic: req.body.isPublic,
+      userId: req.user.id
     })
       .then(newSecret => res.status(201).json(newSecret))
       .catch(next);
@@ -167,9 +190,9 @@ router.post('/', (req, res, next) => {
 ```
 </details><br />
 
-Now the post method only sets the message using req.body. Anything else that the user (or a hacker) might try to send is disregarded.
+Now the post uses the properties from req.body that it should. Anything else that the user (or a hacker) might try to send is disregarded.
 
-Cool! Now our post method is much more secure than it was. We have tests to make sure that only authenticated users can creat secrets. That users can only set the message initially for a new secret. And that the userId should match the user that created the message.
+Cool! Now our post method is much more secure than it was. We have tests to make sure that only authenticated users can create secrets. And that the userId should match the user that created the message.
 
 When you are ready, lets move on to updates and the push method.
 
