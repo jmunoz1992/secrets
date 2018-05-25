@@ -192,11 +192,22 @@ Since this user is within the 'guest' describe , we want to use the basic reques
 
 Why not just add this test into the other test just before it? You could, but this is testing for different behavior than the one above. My general rule is if it's testing different behavior, it should be separated into a different it block.
 
-Now that we have our newly failing test. Let's fix the code to make this work. See if you can come up with a solution. Take a look at the first hint if you want a hint, and the second one if you want to see a solution.
-
 <details><summary><strong>Solution Hint:</strong></summary>
-<blockquote></blockquote>
-</details>
+
+```javascript
+  it('should not return the userId or any data besides the message', () => {
+    return request(app)
+      .get('/api/secrets')
+      .expect(200)
+      .then(res => {
+        expect(res.body[0].userId).to.equal(null);
+      });
+  });
+```
+
+</details><br />
+
+Now that we have our newly failing test. Let's fix the code to make this work.
 
 <details><summary><strong>Solution Hint:</strong></summary>
 
