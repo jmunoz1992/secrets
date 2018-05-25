@@ -56,19 +56,16 @@ router.put('/:id', (req, res, next) => {
 });
 
 router.delete('/:id', (req, res, next) => {
-  if (!req.user) {
-    res.sendStatus(401);
-  } else {
-    Secret.findById(req.params.id)
-      .then(secret => {
-        if (secret.userId !== req.user.id) {
-          res.sendStatus(401);
-        } else {
-          return res.sendStatus(200);
-        }
-      })
-      .catch(next);
-  }
+  Secret.findById(req.params.id)
+    .then(secret => {
+      if (secret.userId !== req.user.id) {
+        res.sendStatus(401);
+      } else {
+        Secret.destroy({ where: {id: req.params.id }})
+        .then(() => res.sendStatus(200));
+      }
+    })
+    .catch(next);
 });
 
 module.exports = router;
