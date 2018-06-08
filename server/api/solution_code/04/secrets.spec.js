@@ -16,7 +16,7 @@ const { seedSecrets, seedUsers } = require('../../script/test-seeds');
 const app = require('../index');
 const request = require('supertest');
 
-describe('Secret model - Worshop Solution', () => {
+describe('Secret model - Workshop Solution', () => {
   let user1PrivateSecret = {};
   let user2PrivateSecret = {};
   let authUser = {};

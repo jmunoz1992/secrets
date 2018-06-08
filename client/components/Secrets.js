@@ -4,18 +4,13 @@ import SecretsForm from './SecretsForm';
 import Secret from './Secret';
 import { updateSecret, destroySecret } from '../store';
 
-const isMySecret = (userId, secret) => {
-  if (secret.userId === userId) return true;
-  return false;
-};
-
 export const Secrets = (props) => {
   const { user, secrets, handleChange, handleDelete } = props;
   const userId = user ? user.id : null;
 
   return (
     <div>
-      {userId ? <SecretsForm /> : null}
+      {userId && <SecretsForm />}
       <div id="s_container">
         {secrets.map(secret => {
           if (secret.isPublic || secret.userId === userId) {

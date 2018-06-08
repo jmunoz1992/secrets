@@ -16,7 +16,7 @@
     "start": "node server",
     "start-dev": "NODE_ENV='development' npm run build-client-watch & npm run start-server",
     "start-server": "nodemon server -e html,js,scss --ignore public --ignore client",
-    "test": "NODE_ENV='test' mocha ./server/**/**/*.spec.js ./client/**/*.spec.js ./script/*.spec.js ./server/**/*.spec.js --require @babel/polyfill --require @babel/register",
+    "test": "NODE_ENV='test' mocha ./server/**/**/*.spec.js ./client/**/*.spec.js ./script/*.spec.js ./server/**/*.spec.js --require @babel/polyfill --require @babel/register --exit",
     "test-watch": "NODE_ENV='test' mocha -w ./server/**/**/*.spec.js ./client/**/*.spec.js ./script/*.spec.js ./server/**/*.spec.js --require @babel/polyfill --require @babel/register"
   },
   "author": "Fullstack Academy of Code",
@@ -62,7 +62,7 @@
     "eslint": "^4.10.0",
     "eslint-config-fullstack": "^3.0.0",
     "eslint-plugin-react": "^7.4.0",
-    "mocha": "^3.3.0",
+    "mocha": "^5.2.0",
     "nodemon": "^1.12.1",
     "react-test-renderer": "^16.0.0",
     "redux-devtools-extension": "^2.13.2",

@@ -17,5 +17,4 @@ export const CheckBoxSlider = ({ label, name, checked, onChange }) => {
   );
 };
 
-// {label}
 export default CheckBoxSlider;
