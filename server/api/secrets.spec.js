@@ -47,6 +47,10 @@ describe('Secret model - Workshop Solution', () => {
       password: 'a123'
     };
 
+    after(() => {
+      return db.close();
+    });
+
     user1PrivateSecret = secrets.filter(secret => (
       secret.userId === 1 && secret.isPublic === false
     ))[0].dataValues;
