@@ -78,11 +78,23 @@ describe('Secret model - Workshop Solution', () => {
         });
       });
 
-      it('should not return the userId or any data besides the message');
+      it('should not return the userId or any data besides the message', () => {
+        return request(app)
+        .get('/api/secrets')
+        .expect(200)
+        .then(res => {
+          expect(res.body[0].userId).to.equal(null);
+        });
+      });
     });
 
     describe('POST /api/secrets', () => {
-      it('should return a 401 unauthorized error');
+      it('should return a 401 unauthorized error', () => {
+        return request(app)
+        .post('/api/secrets')
+        .send({ message: 'This is a new secret' })
+        .expect(401);
+      });
     });
 
     describe('PUT /api/secrets/:id', () => {
@@ -125,7 +137,23 @@ describe('Secret model - Workshop Solution', () => {
     });
 
     describe('POST /api/secrets', () => {
-      it('should create a new secret');
+      it('should create a new secret', () => {
+        return authenticatedUser
+        .post('/api/secrets')
+        .send({
+          message: 'a brand new secret',
+          isPublic: true,
+          userId: 3,
+          id: 99
+        })
+        .expect(201)
+        .then(res => {
+          expect(res.body.message).to.equal('a brand new secret');
+          expect(res.body.userId).to.equal(1);
+          expect(res.body.id).to.not.equal(99);
+          expect(res.body.isPublic).to.equal(true);
+        });
+      });
     });
 
     /*

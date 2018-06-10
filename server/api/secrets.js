@@ -9,13 +9,31 @@ router.get('/', (req, res, next) => {
   if (req.user) {
     where = { [Op.or]: [{userId: req.user.id}, { isPublic: true }] };
   }
+  const userId = req.user && req.user.id ? req.user.id : null;
   Secret.findAll({ where })
-    .then(secrets => res.status(200).json(secrets))
+    .then(secrets => {
+      const filteredSecrets = secrets.map(secret => {
+        return {
+          id: secret.id,
+          message: secret.message,
+          isPublic: secret.isPublic,
+          userId: secret.userId === userId ? userId : null
+        };
+      });
+      return res.status(200).json(filteredSecrets);
+    })
     .catch(next);
 });
 
+// if there is no authenticated user, automatically returns 401
+// if there is an authenticated user, makes sure to only log req body fields that are valid
 router.post('/', (req, res, next) => {
-  Secret.create(req.body)
+  if (!req.user) res.sendStatus(401);
+  Secret.create({
+    message: req.body.message,
+    userId: req.user.id,
+    isPublic: req.body.isPublic,
+  })
     .then(newSecret => res.status(201).json(newSecret))
     .catch(next);
 });
