@@ -1,10 +1,17 @@
 const router = require('express').Router();
 const { Secret } = require('../db/models');
+const { Op } = require('sequelize');
 
+// first get all public secrets
+// if a user is logged in, fetch all public and their own secrets
 router.get('/', (req, res, next) => {
-  Secret.findAll()
-  .then(secrets => res.status(200).json(secrets))
-  .catch(next);
+  let where = { isPublic: true };
+  if (req.user) {
+    where = { [Op.or]: [{userId: req.user.id}, { isPublic: true }] };
+  }
+  Secret.findAll({ where })
+    .then(secrets => res.status(200).json(secrets))
+    .catch(next);
 });
 
 router.post('/', (req, res, next) => {

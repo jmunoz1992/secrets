@@ -66,7 +66,17 @@ describe('Secret model - Workshop Solution', () => {
 
   describe('guests', () => {
     describe('GET /api/secrets', () => {
-      it('should return only the secrets which are public');
+      it('should return only the secrets which are public', () => {
+        return request(app)
+        .get('/api/secrets')
+        .expect(200)
+        .then(res => {
+          expect(res.body).to.be.an('array');
+          expect(res.body.length).to.equal(2);
+          expect(res.body[0].isPublic).to.equal(true);
+          expect(res.body[1].isPublic).to.equal(true);
+        });
+      });
 
       it('should not return the userId or any data besides the message');
     });
@@ -103,7 +113,15 @@ describe('Secret model - Workshop Solution', () => {
     });
 
     describe('GET /api/secrets', () => {
-      it('should return public secrets and their private secrets');
+      it('should return public secrets and their private secrets', () => {
+        return authenticatedUser
+        .get('/api/secrets')
+        .expect(200)
+        .then(res => {
+          expect(res.body).to.be.an('array');
+          expect(res.body.length).to.equal(3);
+        });
+      });
     });
 
     describe('POST /api/secrets', () => {
