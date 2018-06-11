@@ -98,11 +98,20 @@ describe('Secret model - Workshop Solution', () => {
     });
 
     describe('PUT /api/secrets/:id', () => {
-      it('should return a 401 unauthorized error');
+      it('should return a 401 unauthorized error', () => {
+        return request(app)
+        .put(`/api/secrets/${user1PrivateSecret.id}`)
+        .send({ isPublic: true })
+        .expect(401);
+      });
     });
 
     describe('DELETE /api/secrets', () => {
-      it('should return a 401 unauthorized error');
+      it('should return a 401 unauthorized error', () => {
+        return request(app)
+        .delete(`/api/secrets/${user1PrivateSecret.id}`)
+        .expect(401);
+      });
     });
   });
 
@@ -162,13 +171,34 @@ describe('Secret model - Workshop Solution', () => {
 
     describe('when user owns secret', () => {
       describe('PUT /api/secrets/:id', () => {
-        it('should update a secret');
+        it('should update a secret', () => {
+          return authenticatedUser
+          .put(`/api/secrets/${user1PrivateSecret.id}`)
+          .send({ isPublic: true })
+          .expect(200)
+          .then(res => {
+            expect(res.body.isPublic).to.equal(true);
+          });
+        });
 
-        it('should only update whether the secret isPublic');
+        it('should only update whether the secret isPublic', () => {
+          return authenticatedUser
+          .put(`/api/secrets/${user1PrivateSecret.id}`)
+          .send({ message: '99', isPublic: true })
+          .expect(200)
+          .then(res => {
+            expect(res.body.isPublic).to.equal(true);
+            expect(res.body.message).to.not.equal('99');
+          });
+        });
       });
 
       describe('DELETE /api/secrets', () => {
-        it('should delete a secret');
+        it('should delete a secret', () => {
+          return authenticatedUser
+          .delete(`/api/secrets/${user1PrivateSecret.id}`)
+          .expect(200);
+        });
       });
     });
 
@@ -178,13 +208,22 @@ describe('Secret model - Workshop Solution', () => {
 
     describe('when user does NOT own secret', () => {
       describe('PUT /api/secrets/:id', () => {
-        it('should return a 401 unauthorized error');
+        it('should return a 401 unauthorized error', () => {
+          return request(app)
+            .put(`/api/secrets/${user2PrivateSecret.id}`)
+            .send({ isPublic: true })
+            .expect(401);
+        });
       });
 
       describe('DELETE /api/secrets', () => {
-        it('should return a 401 unauthorized error');
+        it('should return a 401 unauthorized error', () => {
+          return authenticatedUser
+          .delete(`/api/secrets/${user2PrivateSecret.id}`)
+          .expect(401);
+          });
+        });
       });
     });
   });
-});
 
